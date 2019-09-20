@@ -6,8 +6,11 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="socketHendler" class="dev.blackping.shop.hendler.SocketHendler" />
-	<websocket:handlers>
+	<websocket:handlers allowed-origins="*">
 		<websocket:mapping handler="socketHendler" path="/echo1" />
+		<websocket:handshake-interceptors>
+			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+	    </websocket:handshake-interceptors>
 		<websocket:sockjs />
 	</websocket:handlers>
 </beans>

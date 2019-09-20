@@ -31,6 +31,5 @@ public class LoginController {
 	
 	@RequestMapping(value="/kakaoback", method=RequestMethod.POST)
 	public void token() {
-		
 	}
 }

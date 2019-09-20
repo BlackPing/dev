@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SocketController {
 	
-	
 //	public static List<?> SocketList = new ArrayList<ArrayList<WebSocketSession>>();
 	@RequestMapping(value = "/key1", method = RequestMethod.GET)
 	public String key1(Locale locale, Model model, HttpSession hsession) {
