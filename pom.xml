@@ -156,7 +156,6 @@
 		</dependency>
 
 		<!-- jackson -->
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -189,6 +188,15 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.0.16.Final</version>
 		</dependency>
+
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>dev</finalName>

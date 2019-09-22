@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+html, body, header { margin: 0px; padding: 0px;}
+input, button, a { all: unset; }
+a { cursor: pointer; }
+header { width: 100%; height: 100px; background-color: black; }
+.header_name { padding-top: 30px; text-align: center; color: white; font-size: 36px; font-weight: bold; }
+nav { width: 100%; height: 50px; background-color: silver; }
