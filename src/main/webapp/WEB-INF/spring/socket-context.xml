@@ -9,7 +9,7 @@
 	<websocket:handlers allowed-origins="*">
 		<websocket:mapping handler="socketHendler" path="/echo1" />
 		<websocket:handshake-interceptors>
-			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+			<bean class="dev.blackping.shop.hendler.HandshakeInterceptor"/>
 	    </websocket:handshake-interceptors>
 		<websocket:sockjs />
 	</websocket:handlers>
