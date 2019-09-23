@@ -34,7 +34,7 @@
 	});
 
 	// 웹소켓을 지정한 url로 연결한다.
-	let sock = new SockJS("<c:url value="/echo1"/>");
+	let sock = new SockJS("http://112.154.178.73:8080/echo1");
 	sock.onmessage = onMessage;
 	sock.onclose = onClose;
 
