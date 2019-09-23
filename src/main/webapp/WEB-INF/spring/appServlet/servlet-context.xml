@@ -28,7 +28,7 @@
 	<websocket:handlers>
 	<websocket:mapping handler="socketHendler" path="/echo1" />
 	<websocket:handshake-interceptors>
-		<beans:bean class="dev.blackping.shop.interceptor.HandshakeInterceptor"/>
+		<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
     </websocket:handshake-interceptors>
 	<websocket:sockjs />
 	</websocket:handlers>
