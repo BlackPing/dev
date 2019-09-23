@@ -13,7 +13,7 @@ public class AutoDAO implements AutoDAOInterface {
 	SqlSession sql;
 	
 	@Override
-	public HashMap<String, Object> getData(String type, String namespace, String id, Object bean) throws DataAccessException {
+	public HashMap<String, Object> sql(String type, String namespace, String id, Object bean) throws DataAccessException {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		switch(type) {

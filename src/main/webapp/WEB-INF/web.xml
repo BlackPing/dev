@@ -31,7 +31,28 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
-		<filter>
+		<!-- error page -->
+	<error-page>
+		<error-code>403</error-code>
+		<location>/WEB-INF/views/exception/error404.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>405</error-code>
+		<location>/WEB-INF/views/exception/error404.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/exception/error404.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/exception/error404.jsp</location>
+	</error-page>
+	
+	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>
 			org.springframework.web.filter.CharacterEncodingFilter
