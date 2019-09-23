@@ -1,9 +1,5 @@
-package dev.blackping.shop.hendler;
+package dev.blackping.shop.interceptor;
 
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +11,13 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
+	@Override
+	public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+			Exception ex) {
+		// TODO Auto-generated method stub
+		super.afterHandshake(request, response, wsHandler, ex);
+	}
+	
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {

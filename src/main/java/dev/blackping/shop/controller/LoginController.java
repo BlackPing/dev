@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@CrossOrigin(origins="*")
 public class LoginController {
 	@PostMapping(value="/login")
 	public HashMap<String, Object> Login(HttpServletResponse res) {
