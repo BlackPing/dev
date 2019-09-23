@@ -1,10 +1,7 @@
 package dev.blackping.shop.hendler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
@@ -12,10 +9,10 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 public class SocketHendler extends TextWebSocketHandler {
-	private List<WebSocketSession> sessionList;
+	private HashMap<String, WebSocketSession> UserMap;
 	
 	public SocketHendler() {
-		sessionList = new ArrayList<WebSocketSession>();
+		UserMap = new HashMap<String, WebSocketSession>();
 		System.out.println("Socket Server ON");
 	}
 	
@@ -24,21 +21,23 @@ public class SocketHendler extends TextWebSocketHandler {
 		Map<String, Object> sessionMap = session.getAttributes();
 		System.out.println(sessionMap.toString());
 		System.out.println("누군가 들어옴 : " + session.getId());
-		sessionList.add(session);
+		UserMap.put(session.getId(), session);
 	}
 
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 		System.out.println("메세지 들어옴");
-		for (WebSocketSession sess : sessionList) {
-			sess.sendMessage(new TextMessage(session.getId() + " : " + message.getPayload()));
+		
+		for (String key : UserMap.keySet()) {
+			WebSocketSession Socket = (WebSocketSession) UserMap.get(key);
+			Socket.sendMessage(new TextMessage(session.getId() + " : " + message.getPayload()));
 		}
 	}
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("연결 끊김 : " + session.getId());
-		sessionList.remove(0);
+		UserMap.remove(session.getId());
 	}
 	
 	@Override

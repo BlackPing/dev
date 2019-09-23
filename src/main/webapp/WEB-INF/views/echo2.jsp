@@ -15,7 +15,7 @@
 	<input type="button" id="sendBtn" value="전송" />
 	<div id="data"></div>
 </body>
-<h1>Echo Server 2</h1>
+<h1>Echo Server 22</h1>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#sendBtn").click(function() {
@@ -31,7 +31,7 @@
 	});
 
 	// 웹소켓을 지정한 url로 연결한다.
-	let sock = new SockJS("<c:url value="/echo2"/>");
+	let sock = new SockJS("<c:url value="/echo1"/>");
 	sock.onmessage = onMessage;
 	sock.onclose = onClose;
 

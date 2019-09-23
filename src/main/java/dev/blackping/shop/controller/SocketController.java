@@ -14,4 +14,11 @@ public class SocketController {
 		System.out.println(session.getAttribute("Name"));
 		return "echo1";
 	}
+	
+	@GetMapping(value="/2")
+	public String test2(HttpServletResponse res, HttpSession session) {
+		session.setAttribute("Name", "test");
+		System.out.println(session.getAttribute("Name"));
+		return "echo2";
+	}
 }
