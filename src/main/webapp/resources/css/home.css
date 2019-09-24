@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+#login-btn { margin-top: 25px; }
+#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover { cursor: pointer; }
+#left-container { float: left; display: inline-block; }
+#profile-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; height: 100px; }
+#topic-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; }
+#socket-container { float: left; margin: 30px 0px 0px 30px; width: calc(100% - 354px);; height: 780px; background-color: black; }
+#topic-create-btn { width:222px; height: 49px; background-color: #f20d0d; opacity: 0.8; border-radius: 0px 10px 0px 10px; }
+
+#topic-create-btn span { position: relative; bottom: 5px; font-weight: bold; color: white; }
+
+.topic-plus { position: relative; top: 2px; left: 25px; color: white;}
+
+#channel-list { height: 30px; margin-top: 20px; border-radius: 10px 0px 10px 0px; background-color: #f20d0d; color: white; }
+#channel-list span { position: relative; top: 5px; }
+#channel-list span:hover { cursor: default; }
+
+.kakaofont { color: #3c1e1e; font-weight: 700; }
+.kakaoform { display: inline-block; padding: 0; color: #3C1E1E; background-color: #FFEB00; border: 1px solid transparent; border-radius: 3px; font-size: 16px; text-align: center; }
+.s-kakao-logo { width: 130px; height: 20px; line-height: 20px; }
+.s-kakao-logo:hover { cursor: default; }
+#logout-form { all: unset; }
+#logout-btn { position: relative; left:30px; width: 80px; height: 20px; line-height: 20px; color: black; opacity: 0.7; font-weight: 700; }
+#logout-btn:hover { cursor: pointer; color: #0099ec; text-decoration: underline; }
+
+#nickname { font-size: 14px; margin-top: 20px; }
+#cert-btn { font-size: 12px; background-color: #1ac133; border-radius: 4px; color: white; }

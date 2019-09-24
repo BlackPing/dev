@@ -11,6 +11,16 @@ import java.util.Iterator;
 import net.sf.json.JSONObject;
 
 public class HttpUtil {
+	
+	// AutoDAO find result Map
+	public static HashMap<String, Object> findMap(HashMap<String, Object> map) {
+		if(map.isEmpty()) {
+			return new HashMap<String, Object>();
+		} else {
+			return (HashMap<String, Object>) map.get("result");
+		}
+	}
+	
 	public static String getOauth(String url, String appkey, String redirectUrl, String... getreq) {
 		String path = "https://kauth.kakao.com/oauth/";
 		path += url;

@@ -1,24 +1,31 @@
 package dev.blackping.shop.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import dev.blackping.shop.service.SocketService;
 
 @Controller
 public class SocketController {
-	@GetMapping(value="/1")
-	public String test(HttpServletResponse res, HttpSession session) {
-		session.setAttribute("Name", "test");
-		System.out.println(session.getAttribute("Name"));
-		return "echo1";
+	@Autowired
+	SocketService socketService;
+	
+	@GetMapping(value="/chatting")
+	public String socketMain(HttpServletResponse res, HttpSession session) {
+		
+		return "chatting";
 	}
 	
-	@GetMapping(value="/2")
-	public String test2(HttpServletResponse res, HttpSession session) {
-		session.setAttribute("Name", "test");
-		System.out.println(session.getAttribute("Name"));
-		return "echo2";
+	@PostMapping(value="/chatting/{namespace}")
+	public void restapi(@PathVariable String namespace, HttpServletRequest req, HttpServletResponse res) {
+		socketService.restkey(namespace);
 	}
 }

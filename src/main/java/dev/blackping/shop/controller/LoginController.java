@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import dev.blackping.shop.DAO.AutoDAOInterface;
 import dev.blackping.shop.bean.UserBean;
+import dev.blackping.shop.object.SessionObject;
 import dev.blackping.shop.util.HttpUtil;
+import dev.blackping.shop.util.Mybatis;
 import net.sf.json.JSONObject;
 
 @Controller
 public class LoginController {
-	String redirect_url = "http://127.0.0.1:8080/kakaoback";
+	String redirect_url = "http://socket.com:8080/kakaoback";
 	String Rest_Key = "1976e916cf04c3a6a22e4e8d06e05c50";
 	
 	@PostMapping(value="/login")
@@ -64,16 +66,15 @@ public class LoginController {
 				
 				String nickname = jobj.get("nickname").toString();
 				String profile_image = jobj.get("profile_image").toString();
-				System.out.println(jobj.toString());
 				
 				UserBean ub = new UserBean(Integer.parseInt(id), nickname, profile_image, 0);
 				HashMap<String, Object> resultMap = adi.sql("SO", "login", "user-select", ub);
-				System.out.println(resultMap.get("count").toString());
+				int Count = Integer.parseInt(Mybatis.findMap(resultMap).get("count").toString());
 				
-//				session.setMaxInactiveInterval(21600);
-//				session.setAttribute("id", id);
-//				session.setAttribute("nickname", nickname);
-//				session.setAttribute("profile_image", profile_image);
+				if(Count == 0) adi.sql("IS", "login", "user-insert", ub);
+				
+				session.setMaxInactiveInterval(21600);
+				session.setAttribute("SESSION_OBJECT", new SessionObject(id, nickname));
 			}
 			
 			res.sendRedirect("/");
@@ -82,5 +83,11 @@ public class LoginController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@PostMapping(value="/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 }

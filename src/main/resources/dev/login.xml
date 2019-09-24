@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="login">
+  <select id="user-select" parameterType="dev.blackping.shop.bean.UserBean" resultType="hashmap">
+    SELECT COUNT(*) as `count` FROM `USER` WHERE `NO` = ${no}
+  </select>
+  
+  <insert id="user-insert" parameterType="dev.blackping.shop.bean.UserBean">
+  	INSERT INTO `USER` VALUES(${no}, #{nickname}, #{profileimage}, ${power})
+  </insert>
+  <select id="test" resultType="hashmap">
+  	SELECT 1 as cnt
+  </select>
+</mapper>

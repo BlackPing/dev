@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+html, body { margin: 0px; padding: 0px; }
+header { background-color: #20235e; width: 100%; height: 100px; color: white; text-align: center; }
+header h1 { margin: 0px; padding-top: 26px; }
+header h1:hover { cursor: default; }
+button { all: unset; }
+
+.text-center { text-align: center; }
