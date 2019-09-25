@@ -6,8 +6,8 @@
 #profile-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; height: 100px; }
 #topic-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; }
 #socket-container { float: left; margin: 30px 0px 0px 30px; width: calc(100% - 354px);; height: 780px; background-color: black; }
-#topic-create-btn { width:222px; height: 49px; background-color: #f20d0d; opacity: 0.8; border-radius: 0px 10px 0px 10px; }
 
+#topic-create-btn { width:222px; height: 49px; background-color: #f20d0d; border-radius: 0px 10px 0px 10px; }
 #topic-create-btn span { position: relative; bottom: 5px; font-weight: bold; color: white; }
 
 .topic-plus { position: relative; top: 2px; left: 25px; color: white;}
@@ -26,3 +26,5 @@
 
 #nickname { font-size: 14px; margin-top: 20px; }
 #cert-btn { font-size: 12px; background-color: #1ac133; border-radius: 4px; color: white; }
+
+#modal { position: fixed; }

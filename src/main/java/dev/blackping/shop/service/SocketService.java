@@ -3,7 +3,7 @@ package dev.blackping.shop.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.blackping.shop.DAO.AutoDAOInterface;
+import dev.blackping.shop.dao.AutoDAOInterface;
 
 @Service
 public class SocketService {

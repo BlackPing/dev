@@ -14,8 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import dev.blackping.shop.DAO.AutoDAOInterface;
 import dev.blackping.shop.bean.UserBean;
+import dev.blackping.shop.dao.AutoDAOInterface;
 import dev.blackping.shop.object.SessionObject;
 import dev.blackping.shop.util.HttpUtil;
 import dev.blackping.shop.util.Mybatis;
@@ -23,7 +23,8 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class LoginController {
-	String redirect_url = "http://socket.com:8080/kakaoback";
+//	String redirect_url = "http://socket.com:8080/kakaoback";
+	String redirect_url = "http://dev.blackping.shop/kakaoback";
 	String Rest_Key = "1976e916cf04c3a6a22e4e8d06e05c50";
 	
 	@PostMapping(value="/login")

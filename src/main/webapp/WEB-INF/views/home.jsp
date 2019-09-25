@@ -10,29 +10,9 @@
 		</style>
 		<title>WebSocket</title>
 		<script type="text/javascript" src="/res/js/jquery-3.4.1.min.js"></script>
+		<script type="text/javascript" src="/res/js/func.js"></script>
 		<script type="text/javascript" src="/res/js/topic.js"></script>
 		<script>
-			let week = ['일', '월', '화', '수', '목', '금', '토'];	
-		
-			getWeek(2019, 9, 29);
-			function getWeek(year, month, day) {
-				let date = new Date();
-				
-				date.setFullYear(year);
-				date.setMonth(month - 1);
-				date.setDate(day);
-				
-				let start = date.getDate() - date.getDay();
-				let end = start + 7;
-				
-				for(var i = start; i < end; i++) {
-					date.setMonth(month - 1);
-					date.setDate(start++);
-					
-					if(date.getDate() <= 1) break;
-					console.log(date.getFullYear(), month, date.getDate(), week[date.getDay()]);
-				}
-			}
 		</script>
 	</head>
 	<body>
@@ -50,9 +30,9 @@
 					<div><span class="kakaofont kakaoform s-kakao-logo">Kakao Account</span><form id="logout-form" action="/logout" method="post"><button id="logout-btn" type="submit">로그아웃</button></form></div>
 					<div id="nickname">
 						닉네임 : ${sessionScope.SESSION_OBJECT.nickname}
-						<span id="cert-btn">인증</span>
+						<span id="cert-btn" onclick="nickname()">변경</span>
 						</div>
-					<div style="font-size: 12px; opacity: 0.5;">채팅방 구독을 할 수 없습니다<br>닉네임 인증을 받아주세요</div>
+					<div style="font-size: 12px; opacity: 0.5;">채팅방 구독을 할 수 없습니다<br>닉네임을 변경해주세요</div>
 				</c:otherwise>
 			</c:choose>
 
@@ -63,5 +43,6 @@
 			</div>
 		</div>
 		<div id="socket-container"></div>
+		<div id="modal"></div>
 	</body>
 </html>

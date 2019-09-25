@@ -1,4 +1,4 @@
-package dev.blackping.shop.DAO;
+package dev.blackping.shop.dao;
 
 import java.util.HashMap;
 
