@@ -9,11 +9,11 @@
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
 	</context-param>
 	
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>dev.blackping.shop.listener.SqlListener</listener-class>
 	</listener>
-	
-	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -38,22 +38,22 @@
 		<!-- error page -->
 	<error-page>
 		<error-code>403</error-code>
-		<location>/WEB-INF/views/exception/error404.jsp</location>
+		<location>/WEB-INF/views/error/error404.jsp</location>
 	</error-page>
 	
 	<error-page>
 		<error-code>405</error-code>
-		<location>/WEB-INF/views/exception/error404.jsp</location>
+		<location>/WEB-INF/views/error/error404.jsp</location>
 	</error-page>
 	
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/views/exception/error404.jsp</location>
+		<location>/WEB-INF/views/error/error404.jsp</location>
 	</error-page>
 
 	<error-page>
 		<error-code>500</error-code>
-		<location>/WEB-INF/views/exception/error404.jsp</location>
+		<location>/WEB-INF/views/error/error404.jsp</location>
 	</error-page>
 	
 	<filter>

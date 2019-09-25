@@ -5,10 +5,8 @@
 <meta charset="UTF-8">
 </head>
 <body>
-	<footer class="bg-dark text-white">
-		<div class="text-center">
-			<p style="padding-top: 40px;">Copyright © 2019 blackping.shop</p>
-		</div>
+	<footer>
+		<p>Copyright 2019 blackping.shop</p>
 	</footer>
 </body>
 </html>

@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="/res/js/jquery-3.4.1.min.js"></script>
 		<script type="text/javascript" src="/res/js/func.js"></script>
 		<script type="text/javascript" src="/res/js/topic.js"></script>
+		<script type="text/javascript" src="/res/js/start.js"></script>
 		<script>
 		</script>
 	</head>
@@ -30,7 +31,7 @@
 					<div><span class="kakaofont kakaoform s-kakao-logo">Kakao Account</span><form id="logout-form" action="/logout" method="post"><button id="logout-btn" type="submit">로그아웃</button></form></div>
 					<div id="nickname">
 						닉네임 : ${sessionScope.SESSION_OBJECT.nickname}
-						<span id="cert-btn" onclick="nickname()">변경</span>
+						<span id="cert-btn" onclick="nickname(event)">변경</span>
 						</div>
 					<div style="font-size: 12px; opacity: 0.5;">채팅방 구독을 할 수 없습니다<br>닉네임을 변경해주세요</div>
 				</c:otherwise>
@@ -44,5 +45,6 @@
 		</div>
 		<div id="socket-container"></div>
 		<div id="modal"></div>
+		<jsp:include page="/resources/jsp/footer.jsp" flush="true" />
 	</body>
 </html>

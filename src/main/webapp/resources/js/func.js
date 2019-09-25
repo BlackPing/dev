@@ -17,3 +17,11 @@ function getWeek(year, month, day) {
 		console.log(date.getFullYear(), date.getMonth() + 1, date.getDate(), week[date.getDay()]);
 	}
 }
+
+function getData(type, url, params, callback) {
+	$.ajax({"type": type, "url": url, "data": params}).
+	done(callback).
+	fail(function() {
+		alert("네트워크 오류 발생");
+	});
+}
