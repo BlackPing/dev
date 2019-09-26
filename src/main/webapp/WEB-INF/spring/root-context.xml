@@ -7,16 +7,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<!-- 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
    		<property name="jndiName" value="java:/comp/env/jdbc/mariadb" />
    		<property name="resourceRef" value="true" />
-   	</bean> -->
-   	
-  	<bean id="dataSource"
-	class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-	p:driverClassName="org.mariadb.jdbc.Driver"
-	p:url="jdbc:mysql://blackping.shop:49306/dev" p:username="ping"
-	p:password="pingsking" />
+   	</bean>
 
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean"
