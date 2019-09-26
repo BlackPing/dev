@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="topic">  
+  <insert id="room-insert" parameterType="hashmap">
+  	INSERT INTO TOPIC(`TITLE`, `USER_NO`) VALUES(#{roomname}, ${no})
+  </insert>
+  <select id="room-select" resultType="hashmap">
+  	SELECT TOPIC.`NO`, TOPIC.`TITLE`, USER.NICKNAME FROM TOPIC LEFT JOIN USER ON TOPIC.USER_NO = USER.NO  WHERE `DELYN` = 'N'
+  </select>
+</mapper>

@@ -25,3 +25,18 @@ function getData(type, url, params, callback) {
 		alert("네트워크 오류 발생");
 	});
 }
+
+function getMessage(msg) {
+	if(msg !== "") {
+		alert(msg);
+		return true;
+	}
+	
+	return false;
+}
+
+function MaxLength(obj) {
+	if(obj.value.length > obj.maxLength){
+		obj.value = obj.value.slice(0, obj.maxLength);
+    }
+}

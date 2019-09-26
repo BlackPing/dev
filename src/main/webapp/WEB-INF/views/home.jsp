@@ -17,7 +17,7 @@
 		</script>
 	</head>
 	<body>
-		<jsp:include page="/resources/jsp/header.jsp" flush="true" />
+		<jsp:include page="/resources/jsp/header.jsp" flush="false" />
 		<div id="left-container">
 			<div id="profile-container">
 			<c:set var="session" value="${sessionScope.SESSION_OBJECT}" />
@@ -33,18 +33,23 @@
 						닉네임 : ${sessionScope.SESSION_OBJECT.nickname}
 						<span id="cert-btn" onclick="nickname(event)">변경</span>
 						</div>
-					<div style="font-size: 12px; opacity: 0.5;">채팅방 구독을 할 수 없습니다<br>닉네임을 변경해주세요</div>
+					<c:if test="${session.power eq 0}">
+						<div style="font-size: 12px; opacity: 0.5;">채팅방 구독을 할 수 없습니다<br>닉네임을 변경해주세요</div>
+					</c:if>
 				</c:otherwise>
 			</c:choose>
 
 			</div>
 			<div id="topic-container">
-				<button id="topic-create-btn" class="text-center"><span>구독 채널 만들기</span><img src="/res/img/square-add-button.png" class="topic-plus"></button>
+				<c:if test="${session.power eq 1}">
+					<button id="topic-create-btn" class="text-center" onclick="topicadd(event)"><span>구독 채널 만들기</span><img src="/res/img/square-add-button.png" class="topic-plus"></button>
+				</c:if>
 				<div id="channel-list" class="text-center"><span>채널 리스트</span></div>
 			</div>
 		</div>
 		<div id="socket-container"></div>
 		<div id="modal"></div>
-		<jsp:include page="/resources/jsp/footer.jsp" flush="true" />
+		<div id="topic-add-modal"></div>
+		<jsp:include page="/resources/jsp/footer.jsp" flush="false" />
 	</body>
 </html>

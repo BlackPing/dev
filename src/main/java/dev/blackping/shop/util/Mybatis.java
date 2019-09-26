@@ -12,4 +12,12 @@ public class Mybatis {
 			return (HashMap<String, Object>) map.get("result");
 		}
 	}
+	
+	public static int findInt(HashMap<String, Object> map) {
+		if(map.isEmpty()) {
+			return 0;
+		} else {
+			return (int) map.get("result");
+		}
+	}
 }

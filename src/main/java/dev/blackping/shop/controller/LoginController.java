@@ -23,8 +23,8 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class LoginController {
-//	String redirect_url = "http://socket.com:8080/kakaoback";
-	String redirect_url = "http://dev.blackping.shop/kakaoback";
+	String redirect_url = "http://socket.com:8080/kakaoback";
+//	String redirect_url = "http://dev.blackping.shop/kakaoback";
 	String Rest_Key = "1976e916cf04c3a6a22e4e8d06e05c50";
 	
 	@PostMapping(value="/login")
@@ -46,7 +46,6 @@ public class LoginController {
 	@GetMapping(value="/kakaoback")
 	public void kakaoback(HttpServletRequest req, HttpServletResponse res, HttpSession session) {
 		HashMap<String, Object> httpMap = new HashMap<String, Object>();
-		System.out.println("why");
 		try {
 			String code = req.getParameter("code");
 			String token_url = HttpUtil.getOauth("token", Rest_Key, URLEncoder.encode(redirect_url, "UTF-8"), "code=" + code, "grant_type=authorization_code");
@@ -73,10 +72,16 @@ public class LoginController {
 				HashMap<String, Object> resultMap = adi.sql("SO", "login", "user-select", ub);
 				int Count = Integer.parseInt(Mybatis.findMap(resultMap).get("count").toString());
 				
-				if(Count == 0) adi.sql("IS", "login", "user-insert", ub);
-				
 				session.setMaxInactiveInterval(21600);
-				session.setAttribute("SESSION_OBJECT", new SessionObject(id, nickname));
+				if(Count == 0) {
+					adi.sql("IS", "login", "user-insert", ub);
+					session.setAttribute("SESSION_OBJECT", new SessionObject(id, nickname, 0));
+				} else {
+					resultMap = adi.sql("SO", "login", "user-login", ub);
+					nickname = Mybatis.findMap(resultMap).get("NICKNAME").toString();
+					int power = Integer.parseInt(Mybatis.findMap(resultMap).get("POWER").toString());
+					session.setAttribute("SESSION_OBJECT", new SessionObject(id, nickname, power));
+				}
 			}
 			
 			res.sendRedirect("/");
