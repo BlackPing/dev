@@ -46,6 +46,7 @@ public class LoginController {
 	@GetMapping(value="/kakaoback")
 	public void kakaoback(HttpServletRequest req, HttpServletResponse res, HttpSession session) {
 		HashMap<String, Object> httpMap = new HashMap<String, Object>();
+		System.out.println("why");
 		try {
 			String code = req.getParameter("code");
 			String token_url = HttpUtil.getOauth("token", Rest_Key, URLEncoder.encode(redirect_url, "UTF-8"), "code=" + code, "grant_type=authorization_code");
