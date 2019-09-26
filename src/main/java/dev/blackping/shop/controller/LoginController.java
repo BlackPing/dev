@@ -23,8 +23,8 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class LoginController {
-	String redirect_url = "http://socket.com:8080/kakaoback";
-//	String redirect_url = "http://dev.blackping.shop/kakaoback";
+//	String redirect_url = "http://socket.com:8080/kakaoback";
+	String redirect_url = "http://dev.blackping.shop/kakaoback";
 	String Rest_Key = "1976e916cf04c3a6a22e4e8d06e05c50";
 	
 	@PostMapping(value="/login")
