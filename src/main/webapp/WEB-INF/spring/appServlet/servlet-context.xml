@@ -9,6 +9,15 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+	<beans:bean id="socketHendler" class="dev.blackping.shop.hendler.SocketHendler" />
+	<websocket:handlers allowed-origins="*">
+	<websocket:mapping handler="socketHendler" path="/echo1" />
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+	    </websocket:handshake-interceptors>
+		<websocket:sockjs />
+	</websocket:handlers>
+
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -23,13 +32,4 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="dev.blackping.shop" />
-	
-	<beans:bean id="socketHendler" class="dev.blackping.shop.hendler.SocketHendler" />
-	<websocket:handlers allowed-origins="*">
-	<websocket:mapping handler="socketHendler" path="/echo1" />
-	<websocket:handshake-interceptors>
-		<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-    </websocket:handshake-interceptors>
-	<websocket:sockjs />
-	</websocket:handlers>
 </beans:beans>
