@@ -45,9 +45,28 @@
 					<button id="topic-create-btn" class="text-center" onclick="topicadd(event)"><span>구독 채널 만들기</span><img src="/res/img/square-add-button.png" class="topic-plus"></button>
 				</c:if>
 				<div id="channel-list" class="text-center"><span>채널 리스트</span></div>
+				<div id="channel"></div>
 			</div>
 		</div>
-		<div id="socket-container"></div>
+		<div id="socket-container">
+		<div style="display: inline-block; width: 200px; height: 100%; background-color: black"></div>
+		<table style="display: inline-block; width: 200px; height: 100%;">
+			<thead>
+				<tr>
+					<th>1</th>
+					<th>2</th>
+					<th>3</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
 		<div id="modal"></div>
 		<div id="topic-add-modal"></div>
 		<jsp:include page="/resources/jsp/footer.jsp" flush="false" />

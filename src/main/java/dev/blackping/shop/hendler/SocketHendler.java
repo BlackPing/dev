@@ -1,6 +1,7 @@
 package dev.blackping.shop.hendler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -8,11 +9,14 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import dev.blackping.shop.service.ConstructService;
+
 public class SocketHendler extends TextWebSocketHandler {
 	private HashMap<String, WebSocketSession> UserMap;
 	
 	public SocketHendler() {
 		UserMap = new HashMap<String, WebSocketSession>();
+		System.out.println(ConstructService.SocketServer.toString());
 		System.out.println("Socket Server ON");
 	}
 	

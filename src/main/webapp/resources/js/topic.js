@@ -44,8 +44,10 @@ function topicadd(event) {
 					}
 				} else {
 					topic_modal = false;
+					$('#display').remove();
 					modal.empty();
 					getMessage(data.msg);
+					select();
 				}
 			});
 		});

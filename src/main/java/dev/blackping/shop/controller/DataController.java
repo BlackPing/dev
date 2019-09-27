@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import dev.blackping.shop.listener.ConstructListener;
 import dev.blackping.shop.service.DataService;
@@ -50,11 +51,19 @@ public class DataController {
 	@PostMapping(value="/topicsl")
 	public void topicselect(HttpSession session, HttpServletResponse res) {
 		try {
+			res.getWriter().write(ds.topicSelect(session));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostMapping(value="/topicup")
+	public void test(HttpSession session, HttpServletResponse res) {
+		try {
 			if(session.getAttribute("SESSION_OBJECT") == null) {
 				res.getWriter().write(ConstructListener.Status.toString());
-			} else {
-				res.getWriter().write(ds.topicSelect());
 			}
+			res.getWriter().write(ds.topicUp(session));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

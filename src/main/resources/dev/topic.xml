@@ -9,4 +9,13 @@
   <select id="room-select" resultType="hashmap">
   	SELECT TOPIC.`NO`, TOPIC.`TITLE`, USER.NICKNAME FROM TOPIC LEFT JOIN USER ON TOPIC.USER_NO = USER.NO  WHERE `DELYN` = 'N'
   </select>
+  <select id="room-topic" parameterType="String" resultType="hashmap">
+	SELECT TOPIC_NO
+	FROM USER_TOPIC AS a
+	JOIN USER AS b
+	ON a.USER_NO = b.NO
+	JOIN TOPIC AS c
+	ON a.TOPIC_NO = c.`NO`
+	WHERE a.USER_NO = ${value}
+  </select>
 </mapper>

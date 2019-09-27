@@ -5,16 +5,32 @@
 #left-container { float: left; display: inline-block; }
 #profile-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; height: 100px; }
 #topic-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; }
-#socket-container { float: left; margin: 30px 0px 30px 30px; width: calc(100% - 354px);; height: 780px; border: 1px solid #20235e; }
+#socket-container { position: relative; left: 294px; margin: 30px 0px 30px 30px; width: calc(100% - 354px); min-width: 600px; height: 780px; border: 1px solid #20235e; }
 
 #topic-create-btn { width:222px; height: 49px; background-color: #f20d0d; border-radius: 0px 10px 0px 10px; }
 #topic-create-btn span { position: relative; bottom: 5px; font-weight: bold; color: white; }
 
 .topic-plus { position: relative; top: 2px; left: 25px; color: white;}
 
-#channel-list { height: 30px; margin-top: 20px; border-radius: 10px 0px 10px 0px; background-color: #f20d0d; color: white; }
+#channel-list { margin-top: 20px; height: 30px; border-radius: 10px 0px 10px 0px; background-color: #f20d0d; color: white; }
 #channel-list span { position: relative; top: 5px; }
 #channel-list span:hover { cursor: default; }
+#channel { margin-top: 5px; width: 222px; height: 512px; overflow-y: auto; overflow-x: hidden; }
+.channel-topic { width: 212px; height: 50px; border: 1px solid #ebebeb; background: linear-gradient(to bottom, #ffffff 40%, #f6f6f6 100%); }
+.channel-no, .channel-master { margin-left: 3px; font-size: 11px; }
+.channel-title { width: 150px; position: relative; bottom: 3px; left: 3px; font-size: 13px; display: inline-block; }
+.channel-btn { position: relative; bottom: 1px; left: 18px; width: 38px; height: 23px; font-size: 14px; background-color: #CC0000; color: white; text-align: center; }
+.channel-btn:hover { cursor: pointer; }
+#channel::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+#channel::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+}
 
 .kakaofont { color: #3c1e1e; font-weight: 700; }
 .kakaoform { display: inline-block; padding: 0; color: #3C1E1E; background-color: #FFEB00; border: 1px solid transparent; border-radius: 3px; font-size: 16px; text-align: center; }
