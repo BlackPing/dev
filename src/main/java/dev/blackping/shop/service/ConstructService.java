@@ -23,8 +23,9 @@ public class ConstructService {
 	public void ConstructSQL() {
 		List<HashMap<String, Object>> SocketList = Mybatis.findList(adi.sql("SL", "socket", "select", null));
 		String key = "";
-		HashMap<String, WebSocketSession> SocketMap = new HashMap<String, WebSocketSession>();
+		HashMap<String, WebSocketSession> SocketMap;
 		for(int i = 0; i < SocketList.size(); i++) {
+			SocketMap = new HashMap<String, WebSocketSession>();
 			key = SocketList.get(i).get("NO").toString();
 			SocketServer.put(key, SocketMap);
 		}

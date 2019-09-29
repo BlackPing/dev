@@ -18,4 +18,24 @@
 	ON a.TOPIC_NO = c.`NO`
 	WHERE a.USER_NO = ${value}
   </select>
+  
+  <select id="room-check" parameterType="hashmap" resultType="integer">
+	SELECT COUNT(*) as `count`
+	FROM USER_TOPIC AS a
+	JOIN USER AS b
+	ON a.USER_NO = b.NO
+	WHERE a.USER_NO = ${id} AND a.TOPIC_NO = ${topic_no}
+  </select>
+  
+  <select id="room-all" resultType="String">
+	SELECT COUNT(*) as `count`
+	FROM TOPIC
+  </select>
+  
+  <insert id="topic-add" parameterType="hashmap">
+  	INSERT INTO USER_TOPIC VALUES(${id}, ${topic_no})
+  </insert>
+  <delete id="topic-kill">
+  	DELETE FROM USER_TOPIC WHERE `USER_NO` = ${id} AND `TOPIC_NO` = ${topic_no}
+  </delete>
 </mapper>

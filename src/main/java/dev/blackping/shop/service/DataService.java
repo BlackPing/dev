@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketSession;
 
 import dev.blackping.shop.dao.AutoDAOInterface;
 import dev.blackping.shop.listener.ConstructListener;
@@ -65,6 +66,8 @@ public class DataService {
 				session.setAttribute("SESSION_OBJECT", sessionObject);
 				resultMap.put("msg", "구독 채널이 추가됐습니다.");
 				resultMap.put("status", true);
+				HashMap<String, WebSocketSession> SocketMap = new HashMap<String, WebSocketSession>();
+				ConstructService.SocketServer.put(Mybatis.findString(adi.sql("SO", "topic", "room-all", null)), SocketMap);
 			} else {
 				resultMap.put("status", false);
 			}
@@ -96,11 +99,35 @@ public class DataService {
 		return JSONObject.fromObject(resultMap).toString();
 	}
 	
-	public String topicUp(HttpSession session) {
-		// 이미 구독중 체크
-		// 리턴 msg
+	public String topicUp(HttpSession session, String param_no) {
+		HashMap<String, Object> ParamMap = new HashMap<String, Object>();
+		HashMap<String, Object> BufferMap = new HashMap<String, Object>();
 		
+		SessionObject sessionObject = (SessionObject)session.getAttribute("SESSION_OBJECT");
 		
-		return "{\"test\":\"test\"}";
+		ParamMap.put("id", sessionObject.getId().toString());
+		ParamMap.put("topic_no", param_no);
+		
+		try {
+			
+			int count = Mybatis.findInt(adi.sql("SO", "topic", "room-check", ParamMap));
+			
+			if(count > 0) { // 구독중
+				adi.sql("KILL", "topic", "topic-kill", ParamMap);
+				BufferMap.put("msg", "채널 구독을 취소했습니다.");
+			} else { // 구독중 아님
+				adi.sql("IS", "topic", "topic-add", ParamMap);
+				BufferMap.put("msg", "채널을 구독했습니다.");
+			}
+			
+			BufferMap.put("status", true);
+		} catch (DataAccessException e) {
+			BufferMap.put("status", false);
+		}
+		
+		System.out.println("test");
+		System.out.println(BufferMap.toString());
+		
+		return JSONObject.fromObject(BufferMap).toString();
 	}
 }

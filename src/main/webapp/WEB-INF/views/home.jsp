@@ -13,14 +13,13 @@
 		<script type="text/javascript" src="/res/js/func.js"></script>
 		<script type="text/javascript" src="/res/js/topic.js"></script>
 		<script type="text/javascript" src="/res/js/start.js"></script>
-		<script>
-		</script>
+		<script></script>
 	</head>
 	<body>
+		<c:set var="session" value="${sessionScope.SESSION_OBJECT}" />
 		<jsp:include page="/resources/jsp/header.jsp" flush="false" />
 		<div id="left-container">
 			<div id="profile-container">
-			<c:set var="session" value="${sessionScope.SESSION_OBJECT}" />
 			<c:choose>
 				<c:when test="${empty session}">
 					<form action="/login" method="post">
@@ -49,26 +48,27 @@
 			</div>
 		</div>
 		<div id="socket-container">
-		<div style="display: inline-block; width: 200px; height: 100%; background-color: black"></div>
-		<table style="display: inline-block; width: 200px; height: 100%;">
-			<thead>
-				<tr>
-					<th>1</th>
-					<th>2</th>
-					<th>3</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>2</td>
-					<td>3</td>
-				</tr>
-			</tbody>
-		</table>
+			<c:choose>
+				<c:when test="${empty session}">
+					로그인이 필요한 서비스입니다.
+				</c:when>
+				<c:otherwise>
+					<table id="topic-connectionlist">
+						<thead>
+							<tr>
+								<td id="topic-list" class="topic-list txt_line" data-topic="main">구독한 채널</td>
+							</tr>
+						</thead>
+					</table>
+					<div id="app-topic"></div>
+					<div id="app-chat" class="display-none"></div>
+					<textarea id="chatting" rows="5" cols="40" wrap="hard"></textarea>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div id="modal"></div>
 		<div id="topic-add-modal"></div>
+		<div id="modal-cancel"></div>
 		<jsp:include page="/resources/jsp/footer.jsp" flush="false" />
 	</body>
 </html>

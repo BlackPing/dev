@@ -23,7 +23,7 @@
 	
 	<beans:bean id="socketHendler" class="dev.blackping.shop.hendler.SocketHendler" />
 	<websocket:handlers allowed-origins="*">
-	<websocket:mapping handler="socketHendler" path="/echo1" />
+	<websocket:mapping handler="socketHendler" path="/echo" />
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
 	    </websocket:handshake-interceptors>

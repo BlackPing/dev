@@ -66,20 +66,26 @@ public class HttpUtil {
 		return resultMap;
 	}
 	
-	public static boolean ParameterAss(HttpSession session, HttpServletRequest req, String... parameters) {
+	public static boolean ParameterAss(HttpServletRequest req, String... parameters) {
 		boolean flag = true;
 		
-		if(session.getAttribute("SESSION_OBJECT") == null) {
-			flag = false;
-		}
 		for(String str : parameters) {
 			if(!flag) break;
-			
+
 			if(req.getParameter(str) == null) {
+				flag = false;
+			} else if("".equals(req.getParameter(str))) {
 				flag = false;
 			}
 		}
 		
 		return flag;
+	}
+	
+	public static JSONObject ErrorMsg(String msgName) {
+		JSONObject BufferMap = new JSONObject();
+		BufferMap.put("status", false);
+		BufferMap.put("msg", ConstructListener.Message.get(msgName).toString());
+		return BufferMap;
 	}
 }

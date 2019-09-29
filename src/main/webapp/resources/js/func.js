@@ -26,13 +26,23 @@ function getData(type, url, params, callback) {
 	});
 }
 
+function a_getData(type, url, params, callback) {
+	$.ajax({"type": type, "url": url, "data": params, "async": false}).
+	done(callback).
+	fail(function() {
+		alert("네트워크 오류 발생");
+	});
+}
+
 function getMessage(msg) {
-	if(msg !== "") {
-		alert(msg);
-		return true;
+	if(undefined == msg) {
+		return false;
+	} else if(msg == "") {
+		return false;
 	}
-	
-	return false;
+
+	alert(msg);
+	return true;
 }
 
 function MaxLength(obj) {

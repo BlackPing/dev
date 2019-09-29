@@ -23,6 +23,14 @@ public class Mybatis {
 		}
 	}
 	
+	public static String findString(HashMap<String, Object> map) {
+		if(map.isEmpty()) {
+			return "";
+		} else {
+			return map.get("result").toString();
+		}
+	}
+
 	public static ArrayList<HashMap<String, Object>> findList(HashMap<String, Object> map) {
 		if(map.isEmpty()) {
 			return new ArrayList<HashMap<String, Object>>();

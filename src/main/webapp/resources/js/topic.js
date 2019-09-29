@@ -20,13 +20,13 @@ function topicadd(event) {
 		html += '<button id="add-room" class="button button1">추가</button>';
 		html += '</div>';
 		$('#topic-modal').append(html);
-		$('html').append('<div id="display"></div>');
+		$('header').prepend('<div id="display"></div>');
 		$('#topic-add-modal').animate({ height: 0 }, 0);
 		$('#topic-add-modal').animate({ height: "+=250px" }, 500);
 		
 		$('#display').off().on('click', function() {
 			topic_modal = false;
-			$('html').find('#display').remove();
+			$('header').find('#display').remove();
 			$('#topic-add-modal').empty();
 		});
 		$('#add-room').off().on('click', function() {
