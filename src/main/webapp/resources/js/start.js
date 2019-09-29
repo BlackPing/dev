@@ -209,7 +209,7 @@ function socket() {
 		console.log("socket");
 		data = JSON.parse(data);
 		if(data.status) {
-			Socket = new WebSocket("ws://dev.blackping.shop/echo");
+			Socket = new WebSocket("ws://112.154.178.73/echo");
 			
 			Socket.onopen = function () {
 			}
