@@ -210,10 +210,10 @@ function select() {
 }
 
 function socket() {
-	$('.loader').removeClass('display-none');
 	return a_getData("POST", "/logincheck", {}, function(data) {
 		data = JSON.parse(data);
 		if(data.status) {
+			$('.loader').removeClass('display-none');
 			Connect();
 		}
 	});
