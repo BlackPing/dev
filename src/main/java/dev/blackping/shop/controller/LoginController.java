@@ -23,8 +23,8 @@ import net.sf.json.JSONObject;
 
 @Controller
 public class LoginController {
-//	String redirect_url = "http://socket.com:8080/kakaoback";
-	String redirect_url = "http://dev.blackping.shop/kakaoback";
+	String redirect_url = "http://socket.com:8080/kakaoback";
+//	String redirect_url = "http://dev.blackping.shop/kakaoback";
 	String Rest_Key = "1976e916cf04c3a6a22e4e8d06e05c50";
 	
 	@PostMapping(value="/login")
@@ -64,9 +64,9 @@ public class LoginController {
 				String id = httpMap.get("id").toString();
 				
 				JSONObject jobj = JSONObject.fromObject(httpMap.get("properties"));
-				
+				System.out.println(jobj.toString());
 				String nickname = jobj.get("nickname").toString();
-				String profile_image = jobj.get("profile_image").toString();
+				String profile_image = "";
 				
 				UserBean ub = new UserBean(Integer.parseInt(id), nickname, profile_image, 0);
 				HashMap<String, Object> resultMap = adi.sql("SO", "login", "user-select", ub);
