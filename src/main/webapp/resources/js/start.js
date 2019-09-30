@@ -3,10 +3,12 @@ let sendMessage = function(type, roomNumber, msg) { };
 let onMessage = function(msg) { };
 let textarea = 0;
 $(document).ready(function() {
-	async function asyncOpen() { // 비동기 처리
-		const t1 = await socket();
-		const t2 = await select();
-	}
+//	async function asyncOpen() { // 비동기 처리
+//		const t1 = await socket();
+//		const t2 = await select();
+//	}
+	socket();
+	select();
 	
 	asyncOpen();
 	
