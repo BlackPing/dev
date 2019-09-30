@@ -10,7 +10,7 @@ $(document).ready(function() {
 	socket();
 	select();
 	
-	asyncOpen();
+//	asyncOpen();
 	
 	$('textarea').on('keydown', function(e) { // 엔터 처리
 		let text = "";
@@ -208,6 +208,9 @@ function socket() {
 		if(data.status) {
 			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
 //			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+			
+			var readyState = Socket.readyState;
+			console.log(readyState);
 			
 			Socket.onopen = function () {
 				sendMessage = function sendMessage(type, roomNumber, msg) {
