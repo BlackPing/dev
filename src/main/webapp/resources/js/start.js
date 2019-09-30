@@ -214,8 +214,8 @@ function socket() {
 }
 
 function Connect() {
-//	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
 		sendMessage = function sendMessage(type, roomNumber, msg) {
