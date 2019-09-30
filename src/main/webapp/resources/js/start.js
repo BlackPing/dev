@@ -2,12 +2,67 @@ let Socket;
 let sendMessage = function(type, roomNumber, msg) { };
 let onMessage = function(msg) { };
 let textarea = 0;
+let status = false;
 $(document).ready(function() {
 //	async function asyncOpen() { // 비동기 처리
 //		const t1 = await socket();
 //		const t2 = await select();
 //	}
-	socket();
+	
+	a_getData("POST", "/logincheck", {}, function(data) {
+		data = JSON.parse(data);
+		if(data.status) {
+			status = true;
+		}
+	});
+	console.log(status);
+	if(status) {
+		Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//		Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+	
+		Socket.onopen = function () {
+			sendMessage = function sendMessage(type, roomNumber, msg) {
+				Socket.send(type + "," + roomNumber + "," + msg);
+			}
+		}
+		
+		onMessage = function onMessage(msg) {
+			let data = JSON.parse(msg.data);
+			console.log(data);
+			let type = data.type;
+			let message = data.msg;
+			
+			let roomNumber = data.roomNumber;
+			let userList = data.userList;
+			let UserDrawing = "";
+			
+			let C_UserList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.UserList');
+			let C_ChatList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList');
+			console.log(data);
+			
+			if(type == "error") {
+				Socket.close();
+				alert(data.msg);
+			}
+			else if(type == "connect" || type == "disconnect") {
+				$('.app-chat[data-topic="' + roomNumber + '"]').children().find('.Counting').text(data.count);
+				for(var i = 0; i < userList.length; i++) {
+					UserDrawing += '<div class="User" data-nickname="' + userList[i] + '">' + userList[i] + '</div>';
+				}
+				
+				C_UserList.children('.UsernickName').empty();
+				C_UserList.children('.UsernickName').append(UserDrawing);
+				C_ChatList.append(message);
+			} else if(type == "send") {
+				let text = '<div>' + data.nickname + ' : ' + message + '</div>';
+				$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(text);
+			}
+			
+			$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
+		}			
+		Socket.onmessage = onMessage;
+	}
+//	socket();
 	select();
 	
 //	asyncOpen();
@@ -202,54 +257,54 @@ function select() {
 	});
 }
 
-function socket() {
-	return a_getData("POST", "/logincheck", {}, function(data) {
-		data = JSON.parse(data);
-		if(data.status) {
-			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-//			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
-			
-			Socket.onopen = function () {
-				sendMessage = function sendMessage(type, roomNumber, msg) {
-					Socket.send(type + "," + roomNumber + "," + msg);
-				}
-			}
-			
-			onMessage = function onMessage(msg) {
-				let data = JSON.parse(msg.data);
-				console.log(data);
-				let type = data.type;
-				let message = data.msg;
-				
-				let roomNumber = data.roomNumber;
-				let userList = data.userList;
-				let UserDrawing = "";
-				
-				let C_UserList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.UserList');
-				let C_ChatList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList');
-				console.log(data);
-				
-				if(type == "error") {
-					Socket.close();
-					alert(data.msg);
-				}
-				else if(type == "connect" || type == "disconnect") {
-					$('.app-chat[data-topic="' + roomNumber + '"]').children().find('.Counting').text(data.count);
-					for(var i = 0; i < userList.length; i++) {
-						UserDrawing += '<div class="User" data-nickname="' + userList[i] + '">' + userList[i] + '</div>';
-					}
-					
-					C_UserList.children('.UsernickName').empty();
-					C_UserList.children('.UsernickName').append(UserDrawing);
-					C_ChatList.append(message);
-				} else if(type == "send") {
-					let text = '<div>' + data.nickname + ' : ' + message + '</div>';
-					$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(text);
-				}
-				
-				$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
-			}			
-			Socket.onmessage = onMessage;
-		}
-	});
-}
+//function socket() {
+//	return a_getData("POST", "/logincheck", {}, function(data) {
+//		data = JSON.parse(data);
+//		if(data.status) {
+//			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+////			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+//			
+//			Socket.onopen = function () {
+//				sendMessage = function sendMessage(type, roomNumber, msg) {
+//					Socket.send(type + "," + roomNumber + "," + msg);
+//				}
+//			}
+//			
+//			onMessage = function onMessage(msg) {
+//				let data = JSON.parse(msg.data);
+//				console.log(data);
+//				let type = data.type;
+//				let message = data.msg;
+//				
+//				let roomNumber = data.roomNumber;
+//				let userList = data.userList;
+//				let UserDrawing = "";
+//				
+//				let C_UserList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.UserList');
+//				let C_ChatList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList');
+//				console.log(data);
+//				
+//				if(type == "error") {
+//					Socket.close();
+//					alert(data.msg);
+//				}
+//				else if(type == "connect" || type == "disconnect") {
+//					$('.app-chat[data-topic="' + roomNumber + '"]').children().find('.Counting').text(data.count);
+//					for(var i = 0; i < userList.length; i++) {
+//						UserDrawing += '<div class="User" data-nickname="' + userList[i] + '">' + userList[i] + '</div>';
+//					}
+//					
+//					C_UserList.children('.UsernickName').empty();
+//					C_UserList.children('.UsernickName').append(UserDrawing);
+//					C_ChatList.append(message);
+//				} else if(type == "send") {
+//					let text = '<div>' + data.nickname + ' : ' + message + '</div>';
+//					$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(text);
+//				}
+//				
+//				$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
+//			}			
+//			Socket.onmessage = onMessage;
+//		}
+//	});
+//}
