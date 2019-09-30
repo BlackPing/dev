@@ -13,3 +13,4 @@ button { all: unset; }
 .opacity { opacity: 0.5; }
 .font-weight { font-weight: 700; }
 .color-green { color: green; }
+.color-red { color: red; }

@@ -3,9 +3,6 @@ let sendMessage = function(type, roomNumber, msg) { };
 let onMessage = function(msg) { };
 let textarea = 0;
 $(document).ready(function() {
-	console.log("test3");
-	
-	
 	async function asyncOpen() { // 비동기 처리
 		const t1 = await socket();
 		const t2 = await select();
@@ -13,7 +10,7 @@ $(document).ready(function() {
 	
 	asyncOpen();
 	
-	$('textarea').on('keydown', function(e) {
+	$('textarea').on('keydown', function(e) { // 엔터 처리
 		let text = "";
         if (e.keyCode == 13) {
         	if (!e.shiftKey){
@@ -21,7 +18,8 @@ $(document).ready(function() {
         		text = $('textarea').val();
         		$('textarea').val('');
         		
-        		if(textarea == 0) return;
+        		if(text == "" || text == undefined) return;
+        		else if(textarea == 0) return;
         		sendMessage("send", textarea, text);
         	} else {
         		let maxRows = $('textarea').attr('rows');
@@ -48,7 +46,6 @@ function select() {
 		data = JSON.parse(data);
 		$('#channel').empty();
 		$('#app-topic').empty();
-		console.log("select");
 		let html;
 		let inghtml;
 		for(var i = 0; i < data.select.result.length; i++) {
@@ -56,7 +53,6 @@ function select() {
 			html += '<span class="channel-no">NO: ' + data.select.result[i].NO + '</span>';
 			html += '<span class="channel-master">Master: ' + data.select.result[i].NICKNAME + '</span>';
 			html += '<div class="channel-title">' + data.select.result[i].TITLE + '</div>';
-			
 			
 			if(data.topic.result != undefined) {
 				for(var j = 0; j < data.topic.result.length; j++) {
@@ -122,7 +118,7 @@ function select() {
 				list.children().addClass('opacity');
 				
 				let html = '<td data-topic="' + no + '"><div class="txt_line" title="' + title + '">' + title + '</div></td>';
-				app.append('<div class="app-chat" data-topic="' + no + '"><div class="ChatList"></div><div class="UserList"></div></div>');
+				app.append('<div class="app-chat" data-topic="' + no + '"><div class="ChatList"></div><div class="UserList"><div class="UserCount">채팅중인 회원 : <span class="color-red"><span class="Counting">0</span> 명</span></div></div></div>');
 				list.append(html);
 				
 				app.removeClass('display-none');
@@ -206,39 +202,46 @@ function select() {
 
 function socket() {
 	return getData("POST", "/logincheck", {}, function(data) {
-		console.log("socket");
 		data = JSON.parse(data);
 		if(data.status) {
 			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 			
 			Socket.onopen = function () {
-			}
-			
-			sendMessage = function sendMessage(type, roomNumber, msg) {
-				Socket.send(type + "," + roomNumber + "," + msg);
+				sendMessage = function sendMessage(type, roomNumber, msg) {
+					Socket.send(type + "," + roomNumber + "," + msg);
+				}
 			}
 			
 			onMessage = function onMessage(msg) {
 				let data = JSON.parse(msg.data);
-				console.log(data);
 				
 				let type = data.type;
 				let message = data.msg;
-				let nickname = '<div data-nickname="' + data.nickname + '">' + data.nickname + '</div>';
+				let nickname = '<div class="User" data-nickname="' + data.nickname + '">' + data.nickname + '</div>';
 				let roomNumber = data.roomNumber;
+				let userList = data.userList;
+				let UserDrawing = "";
 				
+				let C_UserList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.UserList');
+				let C_ChatList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList');
 				if(type == "connect") {
-					$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(message);
-					$('.app-chat[data-topic="' + roomNumber + '"]').children('.UserList').append(nickname);
+					$('.app-chat[data-topic="' + roomNumber + '"]').children().find('.Counting').text(data.count);
+					for(var i = 0; i < userList.length; i++) {
+						UserDrawing += '<div class="User" data-nickname="' + userList[i] + '">' + userList[i] + '</div>';
+					}
+					
+					C_UserList.append(UserDrawing);
+					C_ChatList.append(message);
 				} else if(type == "disconnect") {
-					$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(message);
+					C_ChatList.append(message);
 					$('.app-chat[data-topic="' + roomNumber + '"]').children('div[data-nickname="' + nickname + '"]').remove();
 				} else if(type == "send") {
-					console.log("test");
 					let text = '<div>' + data.nickname + ' : ' + message + '</div>';
 					$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(text);
 				}
 				
+				$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
 			}			
 			Socket.onmessage = onMessage;
 		}

@@ -1,11 +1,13 @@
 @charset "UTF-8";
 
 #login-btn { margin-top: 25px; }
-#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover, #nick-cert-btn:hover, .channel-btn:hover, .ing-btn, .app-topic-list span, #topic-close, #topic-cancel { cursor: pointer; }
+#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover, #nick-cert-btn:hover, .channel-btn:hover, .ing-btn, .app-topic-list span, #topic-close, #topic-cancel, .User:hover { cursor: pointer; }
 #left-container { float: left; display: inline-block; }
+#container { margin-left: calc(50% - 600px); width: 1200px; height: 890px; }
 #profile-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; height: 100px; }
 #topic-container { margin: 30px 0px 30px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; }
-#socket-container { float:left; margin: 30px 0px 30px 30px; width: calc(100% - 354px); min-width: 600px; height: 450px; }
+#socket-container { float: left; margin: 30px 0px 30px 30px; width: 800px; height: 450px; }
+#socket-container:after { clear: both; }
 
 #topic-create-btn { width:222px; height: 49px; background-color: #f20d0d; border-radius: 0px 10px 0px 10px; }
 #topic-create-btn span { position: relative; bottom: 5px; font-weight: bold; color: white; }
@@ -76,18 +78,22 @@ table { padding: 0px; margin: 0px; }
 .txt_line { width: 100px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 #topic-connectionlist td { cursor: pointer; padding: 3px; border: 1px solid #ebebeb; background: linear-gradient(to bottom, #ffffff 40%, #f6f6f6 100%); }
-#app-chat, #app-topic { width: 100%; height: 300px; border: 1px solid #ebebeb; box-sizing: border-box; }
+#app-chat, #app-topic { padding-top: 10px; width: 100%; height: 300px; border: 1px solid #ebebeb; box-sizing: border-box; font-size: 10pt; }
 .app-chat { width: 100%; height: 100%;}
 #app-topic { overflow-x: auto; }
 #chatting { margin-top: 10px; width: 600px; height: 100px; resize: none; }
 
-.app-topic-list { background-color: #a8a8a8; width: 800px; padding: 10px; margin: 10px; margin-left: 80px; border-radius: 10px; color: white; }
+.app-topic-list { background-color: #a8a8a8; width: 610px; padding: 10px; margin: 10px; margin-left: 80px; border-radius: 10px; color: white; }
 .topic-up { float: right; border: 1px solid #ebebeb; background: linear-gradient(to bottom, #ffffff 40%, #f6f6f6 100%); box-sizing: border-box; color: black; }
 
 #modal-cancel { position: absolute; width: 100px; height: 40px; font-size: 14px; }
 #modal-cancel div { width: 100px; height: 20px; background-color: white; border: 1px solid black; }
 #modal-cancel div:hover { background-color: #078aeb; }
 
-.ChatList { display: inline-block; width: calc(100% - 120px); height: 100%; overflow-y: scroll;}
+.ChatList { display: inline-block; width: calc(100% - 230px); height: calc(100% - 10px); overflow-y: scroll;}
 .ChatList div { margin-left: 30px; }
-.UserList { display: inline-block; margin-left: 20px; width: 100px; height: 100%; overflow: scroll;}
+.UserList { margin: 0px 10px 0px 10px; display: inline-block; width: 210px; height: calc(100% - 10px); overflow-y: scroll;}
+.UserCount { margin-right: 10px; text-align: center; padding: 5px 10px 5px 10px; margin-bottom: 5px; border: 1px solid #f49520; border-radius: 3px; background-color: #fcfaa0; cursor: default; }
+
+.User { padding: 5px 0px 5px 0px; }
+.User:hover { background-color: #54aef8; }

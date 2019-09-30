@@ -1,6 +1,8 @@
 package dev.blackping.shop.hendler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +42,6 @@ public class SocketHendler extends TextWebSocketHandler {
 
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-		// 채팅방 접속 로직 작성
-		// 채팅방별 send 메세지 작성
 		System.out.println("Send Check");
 		System.out.println(ConstructService.SocketServer.toString());
 		if(SessionCheck(session)) {
@@ -80,10 +80,19 @@ public class SocketHendler extends TextWebSocketHandler {
 							messageMap.put("nickname", sessionObject.getNickname());
 							messageMap.put("msg", msg);
 							messageMap.put("type", "connect");
+							messageMap.put("count", SocketRoom.size());
+							
+							List<String> UserList = new ArrayList<String>();
+							for(String key : SocketRoom.keySet()) { // 접속 유저 리스트
+								Socket = (WebSocketSession) SocketRoom.get(key);
+								sessionObject = (SessionObject) Socket.getAttributes().get("SESSION_OBJECT");
+								UserList.add(sessionObject.getNickname());
+							}
+							
+							messageMap.put("userList", UserList);
 							
 							System.out.println(ConstructService.SocketServer.toString());
-							
-							for(String key : SocketRoom.keySet()) {
+							for(String key : SocketRoom.keySet()) { // 구독 채널  Send
 								Socket = (WebSocketSession) SocketRoom.get(key);
 								Socket.sendMessage(new TextMessage(messageMap.toString()));
 							}
@@ -95,13 +104,24 @@ public class SocketHendler extends TextWebSocketHandler {
 						break;
 						
 					case "disconnect":
-						msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 입장하셨습니다.</div>";
+						msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
 						
 						SocketRoom.remove(session.getId());
 						messageMap.put("roomNumber", roomNumber);
 						messageMap.put("nickname", sessionObject.getNickname());
 						messageMap.put("msg", msg);
 						messageMap.put("type", "disconnect");
+						messageMap.put("count", SocketRoom.size());
+						
+						
+						List<String> UserList = new ArrayList<String>();
+						for(String key : SocketRoom.keySet()) { // 접속 유저 리스트
+							Socket = (WebSocketSession) SocketRoom.get(key);
+							sessionObject = (SessionObject) Socket.getAttributes().get("SESSION_OBJECT");
+							UserList.add(sessionObject.getNickname());
+						}
+						
+						messageMap.put("userList", UserList);
 						
 						for(String key : SocketRoom.keySet()) {
 							Socket = (WebSocketSession) SocketRoom.get(key);
@@ -127,12 +147,6 @@ public class SocketHendler extends TextWebSocketHandler {
 					default:
 						break;
 				}
-				
-//				System.out.println(adi.sql("SO", "login", "test", null).toString());
-//				for (String key : UserMap.keySet()) {
-//					WebSocketSession Socket = (WebSocketSession) UserMap.get(key);
-//					Socket.sendMessage(new TextMessage(session.getId() + " : " + message.getPayload()));
-//				}
 			}
 			
 			
