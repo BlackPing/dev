@@ -8,9 +8,8 @@ $(document).ready(function() {
 //		const t1 = await socket();
 //		const t2 = await select();
 //	}
-	
+
 	socket();
-	select();
 	
 //	asyncOpen();
 	
@@ -47,6 +46,10 @@ $(document).ready(function() {
 function select() {
 	let flag = false;
 	return getData("POST", "/topicsl", {}, function(data) {
+		if(Socket == undefined) {
+			return;
+		}
+
 		data = JSON.parse(data);
 		$('#channel').empty();
 		$('#app-topic').empty();
@@ -93,7 +96,7 @@ function select() {
 					}
 				} else {
 					getMessage(data.msg);
-					select();
+					if(Socket != undefined) select();
 				}
 			});
 		});
@@ -200,11 +203,14 @@ function select() {
 				
 				}
 			});
+			
+			
 		});
 	});
 }
 
 function socket() {
+	$('.loader').removeClass('display-none');
 	return a_getData("POST", "/logincheck", {}, function(data) {
 		data = JSON.parse(data);
 		if(data.status) {
@@ -218,7 +224,8 @@ function Connect() {
 //	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
-		console.log("연결 완료!");
+		$('.loader').addClass('display-none');
+		select();
 		sendMessage = function sendMessage(type, roomNumber, msg) {
 			Socket.send(type + "," + roomNumber + "," + msg);
 		}
@@ -235,7 +242,6 @@ function Connect() {
 		
 		let C_UserList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.UserList');
 		let C_ChatList = $('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList');
-		console.log(data);
 		
 		if(type == "error") {
 			Socket.close();

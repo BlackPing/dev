@@ -20,6 +20,7 @@
 		<jsp:include page="/resources/jsp/header.jsp" flush="false" />
 		
 		<div id="container">
+			<div class="loader display-none"></div>
 			<div id="left-container">
 				<div id="profile-container">
 				<c:choose>
