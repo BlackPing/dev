@@ -218,6 +218,7 @@ function Connect() {
 //	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
+		console.log("연결 완료!");
 		sendMessage = function sendMessage(type, roomNumber, msg) {
 			Socket.send(type + "," + roomNumber + "," + msg);
 		}
