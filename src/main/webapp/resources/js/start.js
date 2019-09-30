@@ -210,24 +210,12 @@ function socket() {
 		if(data.status) {
 			Connect();
 		}
-		
-		if(Socket.readyState == 0) {
-			var myTimer = setTimeout(function() {
-				if(Socket.readyState != 0) {
-					clearTimeout(myTimer);
-				} else {
-					Connect();
-				}
-			}, 100);
-		}
-
-		console.log(Socket);
 	});
 }
 
 function Connect() {
-	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-//	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+//	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
 		sendMessage = function sendMessage(type, roomNumber, msg) {
@@ -270,4 +258,15 @@ function Connect() {
 		$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
 	}			
 	Socket.onmessage = onMessage;
+	
+	if(Socket.readyState == 0) {
+	var myTimer = setTimeout(function() {
+			console.log(Socket.readyState);
+			if(Socket.readyState != 0) {
+				clearTimeout(myTimer);
+			} else {
+				Connect();
+			}
+		}, 100);
+	}
 }
