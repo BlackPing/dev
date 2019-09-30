@@ -206,8 +206,8 @@ function socket() {
 	return getData("POST", "/logincheck", {}, function(data) {
 		data = JSON.parse(data);
 		if(data.status) {
-//			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 			
 			if(Socket.readyState == 0) {
 				Socket;
