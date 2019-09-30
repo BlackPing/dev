@@ -203,19 +203,11 @@ function select() {
 }
 
 function socket() {
-	return getData("POST", "/logincheck", {}, function(data) {
+	return a_getData("POST", "/logincheck", {}, function(data) {
 		data = JSON.parse(data);
 		if(data.status) {
 			Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
 //			Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
-			
-			if(Socket.readyState == 0) {
-				Socket;
-				console.log("소켓 재연결", Socket.readyState);
-			}
-			
-			var readyState = Socket.readyState;
-			console.log(readyState);
 			
 			Socket.onopen = function () {
 				sendMessage = function sendMessage(type, roomNumber, msg) {
