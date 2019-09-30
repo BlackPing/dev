@@ -225,7 +225,6 @@ function Connect() {
 	
 	onMessage = function onMessage(msg) {
 		let data = JSON.parse(msg.data);
-		console.log(data);
 		let type = data.type;
 		let message = data.msg;
 		
@@ -256,17 +255,6 @@ function Connect() {
 		}
 		
 		$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
-	}			
-	Socket.onmessage = onMessage;
-	
-	if(Socket.readyState == 0) {
-	var myTimer = setTimeout(function() {
-			console.log(Socket.readyState);
-			if(Socket.readyState != 0) {
-				clearTimeout(myTimer);
-			} else {
-				Connect();
-			}
-		}, 100);
 	}
+	Socket.onmessage = onMessage;
 }
