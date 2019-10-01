@@ -1,5 +1,6 @@
 package dev.blackping.shop.hendler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,10 @@ public class SocketHendler extends TextWebSocketHandler {
 			Map<String, Object> sessionMap = session.getAttributes();
 			HashMap<String, Object> BufferMap = new HashMap<String, Object>();
 			HashMap<String, Object> CheckMap;
-			String sessionValue = sessionMap.get("HTTP.SESSION.ID").toString();
+			
+			SessionObject sessionObject = (SessionObject) sessionMap.get("SESSION_OBJECT");
+			
+			
 			System.out.println(sessionMap.toString());
 			if(!UserMap.isEmpty()) {
 				
@@ -48,14 +52,14 @@ public class SocketHendler extends TextWebSocketHandler {
 				for(String key : UserMap.keySet()) {
 					CheckMap = UserMap.get(key);
 					
-					if(CheckMap.get("session").toString().equals(sessionValue)) {
+					if(CheckMap.get("session").toString().equals(sessionObject.getId())) {
 						flag = false;
 						break;
 					}
 				}
 				
 				BufferMap.put("room", "");
-				BufferMap.put("session", sessionValue);
+				BufferMap.put("session", sessionObject.getId());
 				UserMap.put(session.getId(), BufferMap);
 				if(!flag) {  // 동시 접속자 close 처리
 					JSONObject messageMap = new JSONObject();
@@ -65,7 +69,7 @@ public class SocketHendler extends TextWebSocketHandler {
 				}
 			} else { // 서버 처음 켜지고 처음 입장할때만 발동
 				BufferMap.put("room", "");
-				BufferMap.put("session", sessionValue);
+				BufferMap.put("session", sessionObject.getId());
 				UserMap.put(session.getId(), BufferMap);
 			}
 			
@@ -106,29 +110,14 @@ public class SocketHendler extends TextWebSocketHandler {
 						int count = Mybatis.findInt(adi.sql("SO", "topic", "room-check", ParamMap));
 						
 						if(count > 0) {
-							msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 입장하셨습니다.</div>";
-							
 							SocketRoom.put(session.getId(), session);
-							messageMap.put("roomNumber", roomNumber);
-							messageMap.put("nickname", sessionObject.getNickname());
-							messageMap.put("msg", msg);
-							messageMap.put("type", "connect");
-							messageMap.put("count", SocketRoom.size());
 							
-							List<String> UserList = new ArrayList<String>();
-							for(String key : SocketRoom.keySet()) { // 접속 유저 리스트
-								Socket = (WebSocketSession) SocketRoom.get(key);
-								sessionObject = (SessionObject) Socket.getAttributes().get("SESSION_OBJECT");
-								UserList.add(sessionObject.getNickname());
-							}
-							
-							messageMap.put("userList", UserList);
+							msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 입장하셨습니다.</div>";
+							messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", msg, "type", "connect",
+									"count", SocketRoom.size(), "userList", UserList(roomNumber));
 							
 							System.out.println(ConstructService.SocketServer.toString());
-							for(String key : SocketRoom.keySet()) { // 구독 채널  Send
-								Socket = (WebSocketSession) SocketRoom.get(key);
-								Socket.sendMessage(new TextMessage(messageMap.toString()));
-							}
+							RoomSend(SocketRoom, messageMap);
 							
 							System.out.println(UserMap.toString());
 							BufferMap = UserMap.get(session.getId());
@@ -136,34 +125,18 @@ public class SocketHendler extends TextWebSocketHandler {
 							
 							UserMap.put(session.getId(), BufferMap);
 						} else {
-							session.sendMessage(new TextMessage("구독 채널이 아닙니다."));
+							messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", "구독 채널이 아닙니다.", "type", "error");
 						}
 						break;
 						
 					case "disconnect":
-						msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
-						
 						SocketRoom.remove(session.getId());
-						messageMap.put("roomNumber", roomNumber);
-						messageMap.put("nickname", sessionObject.getNickname());
-						messageMap.put("msg", msg);
-						messageMap.put("type", "disconnect");
-						messageMap.put("count", SocketRoom.size());
 						
+						msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
+						messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", msg, "type", "connect",
+								"count", SocketRoom.size(), "userList", UserList(roomNumber));
 						
-						List<String> UserList = new ArrayList<String>();
-						for(String key : SocketRoom.keySet()) { // 접속 유저 리스트
-							Socket = (WebSocketSession) SocketRoom.get(key);
-							sessionObject = (SessionObject) Socket.getAttributes().get("SESSION_OBJECT");
-							UserList.add(sessionObject.getNickname());
-						}
-						
-						messageMap.put("userList", UserList);
-						
-						for(String key : SocketRoom.keySet()) {
-							Socket = (WebSocketSession) SocketRoom.get(key);
-							Socket.sendMessage(new TextMessage(messageMap.toString()));
-						}
+						RoomSend(SocketRoom, messageMap);
 						
 						BufferMap = UserMap.get(session.getId());
 						BufferMap.put("room", BufferMap.get("room").toString().replace(roomNumber + ",", ""));
@@ -173,23 +146,15 @@ public class SocketHendler extends TextWebSocketHandler {
 						break;
 						
 					case "send":
-						messageMap.put("roomNumber", roomNumber);
-						messageMap.put("nickname", sessionObject.getNickname());
-						messageMap.put("msg", Message);
-						messageMap.put("type", "send");
+						messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", Message, "type", "send");
 						
-						for(String key : SocketRoom.keySet()) {
-							Socket = (WebSocketSession) SocketRoom.get(key);
-							Socket.sendMessage(new TextMessage(messageMap.toString()));
-						}
+						RoomSend(SocketRoom, messageMap);
 						break;
 						
 					default:
 						break;
 				}
 			}
-			
-			
 		}
 	}
 	
@@ -214,33 +179,16 @@ public class SocketHendler extends TextWebSocketHandler {
 			Length = 0;
 		} else {
 			String msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
-			messageMap.put("nickname", sessionObject.getNickname());
-			messageMap.put("msg", msg);
-			messageMap.put("type", "disconnect");
+			messageMap = CreateMap("nickname", sessionObject.getNickname(), "msg", msg, "type", "disconnect");
 			
 			HashMap<String, WebSocketSession> SocketRoom;
 			for(int i = 0; i < Length; i++) {
-				System.out.println("DIS CON!!!!!!");
-				
 				SocketRoom = ConstructService.SocketServer.get(roomList[i]);
 				SocketRoom.remove(session.getId());
 				
-				messageMap.put("roomNumber", roomList[i]);
-				messageMap.put("count", SocketRoom.size());
-				
-				List<String> UserList = new ArrayList<String>();
-				for(String key : SocketRoom.keySet()) { // 접속 유저 리스트
-					Socket = (WebSocketSession) SocketRoom.get(key);
-					sessionObject = (SessionObject) Socket.getAttributes().get("SESSION_OBJECT");
-					UserList.add(sessionObject.getNickname());
-				}
-				
-				messageMap.put("userList", UserList);
-				
-				for(String key : SocketRoom.keySet()) {
-					Socket = (WebSocketSession) SocketRoom.get(key);
-					Socket.sendMessage(new TextMessage(messageMap.toString()));
-				}
+				messageMap = CreateMap("roomNumber", roomList[i], "count", SocketRoom.size(), "userList", UserList(roomList[i]));
+
+				RoomSend(SocketRoom, messageMap);
 			}
 		}
 		
@@ -249,7 +197,11 @@ public class SocketHendler extends TextWebSocketHandler {
 	
 	@Override
 	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-		System.out.println("전송 오류 발생");
+		System.out.println("Send Error");
+		
+		JSONObject messageMap = new JSONObject();
+		messageMap = CreateMap("type", "error", "msg", "전송 오류 발생");
+		session.sendMessage(new TextMessage(messageMap.toString()));
 	}
 	
 	public boolean SessionCheck(WebSocketSession session) {
@@ -261,5 +213,63 @@ public class SocketHendler extends TextWebSocketHandler {
 		}
 		
 		return flag;
+	}
+	
+	public List<String> UserList(String roomNumber) {
+		HashMap<String, WebSocketSession> SocketRoom = ConstructService.SocketServer.get(roomNumber);
+		
+		WebSocketSession Socket;
+		SessionObject sessionObject;
+		
+		List<String> UserList = new ArrayList<String>();
+		for(String key : SocketRoom.keySet()) { // 접속 유저 리스트
+			Socket = (WebSocketSession) SocketRoom.get(key);
+			sessionObject = (SessionObject) Socket.getAttributes().get("SESSION_OBJECT");
+			UserList.add(sessionObject.getNickname());
+		}
+		
+		return UserList;
+	}
+	
+	public JSONObject CreateMap(Object... str) {
+		JSONObject JSON = new JSONObject();
+		
+		if(str.length % 2 == 1) {
+			return JSON;
+		}
+
+		int index = 0;
+		int Check = 0;
+		String Key = "";
+		Object Value = "";
+		boolean put = false;
+		
+		for(Object s : str) {
+			Check = index % 2;
+			
+			if(Check == 0) {
+				Key = s.toString();
+			} else {
+				Value = s;
+				put = true;
+			}
+			
+			if(put) {
+				put = false;
+				JSON.put(Key, Value);
+			}
+			
+			index++;
+		}
+		return JSON;
+	}
+	
+	public void RoomSend(HashMap<String, WebSocketSession> SocketRoom, JSONObject messageMap) throws IOException {
+		WebSocketSession Socket;
+		
+		for(String key : SocketRoom.keySet()) {
+			Socket = (WebSocketSession) SocketRoom.get(key);
+			Socket.sendMessage(new TextMessage(messageMap.toString()));
+		}
 	}
 }

@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
 #login-btn { margin-top: 25px; }
-#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover, #nick-cert-btn:hover, .channel-btn:hover, .ing-btn, .app-topic-list span, #topic-close, #topic-cancel, .User:hover { cursor: pointer; }
+#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover, #nick-cert-btn:hover, .channel-btn:hover, .ing-btn, .app-topic-list span, #topic-close, #topic-cancel, .User:hover, .channel-delete:hover { cursor: pointer; }
 #left-container { float: left; display: inline-block; }
 #container { margin-left: calc(50% - 600px); width: 1200px; height: 890px; }
 #profile-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; height: 100px; }
 #topic-container { margin: 30px 0px 30px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; }
-#socket-container { float: left; margin: 30px 0px 30px 30px; width: 800px; height: 450px; }
+#socket-container { position: relative; float: left; margin: 30px 0px 30px 30px; width: 800px; height: 450px; }
 #socket-container:after { clear: both; }
 
 #topic-create-btn { width:222px; height: 49px; background-color: #f20d0d; border-radius: 0px 10px 0px 10px; }
@@ -22,6 +22,8 @@
 .channel-no, .channel-master { margin-left: 3px; font-size: 11px; }
 .channel-title { width: 150px; position: relative; bottom: 3px; left: 3px; font-size: 13px; display: inline-block; }
 .channel-btn, .ing-btn { position: relative; bottom: 1px; left: 18px; width: 38px; height: 23px; font-size: 14px; background-color: #CC0000; color: white; text-align: center; }
+.channel-btn img { position: relative; top: 2px; }
+.channel-delete { margin-right: 6px; float: right; width: 38px; height: 15px; font-size: 12px; background-color: #CC0000; color: white; text-align: center; }
 #channel::-webkit-scrollbar, #topic-ing-container::-webkit-scrollbar
 {
 	width: 10px;
@@ -78,9 +80,11 @@ table { padding: 0px; margin: 0px; }
 .txt_line { width: 100px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 #topic-connectionlist td { cursor: pointer; padding: 3px; border: 1px solid #ebebeb; background: linear-gradient(to bottom, #ffffff 40%, #f6f6f6 100%); }
-#app-chat, #app-topic { padding-top: 10px; width: 100%; height: 300px; border: 1px solid #ebebeb; box-sizing: border-box; font-size: 10pt; }
-.app-chat { width: 100%; height: 100%;}
+#app-chat, #app-topic { position: absolute; padding-top: 0px 10px 0px 10px; width: 100%; height: 300px; border: 1px solid #ebebeb; box-sizing: border-box; font-size: 10pt; }
+.app-chat { position: absolute; width: 100%; height: 100%;}
+#app-chat { position: absolute; }
 #app-topic { overflow-x: auto; }
+#app-textarea { position: absolute; bottom: 0;}
 #chatting { margin-top: 10px; width: 600px; height: 100px; resize: none; }
 
 .app-topic-list { background-color: #a8a8a8; width: 610px; padding: 10px; margin: 10px; margin-left: 80px; border-radius: 10px; color: white; }
@@ -93,15 +97,15 @@ table { padding: 0px; margin: 0px; }
 .ChatList { display: inline-block; width: calc(100% - 230px); height: calc(100% - 10px); overflow-y: scroll;}
 .ChatList div { margin-left: 30px; }
 .UserList { margin: 0px 10px 0px 10px; display: inline-block; width: 210px; height: calc(100% - 10px); overflow-y: scroll;}
-.UserCount { margin-right: 10px; text-align: center; padding: 5px 10px 5px 10px; margin-bottom: 5px; border: 1px solid #f49520; border-radius: 3px; background-color: #fcfaa0; cursor: default; }
+.UserCount { margin: 5px 10px 5px 0px; text-align: center; padding: 5px 10px 5px 10px; border: 1px solid #f49520; border-radius: 3px; background-color: #fcfaa0; cursor: default; }
 
 .User { padding: 5px 0px 5px 0px; }
 .User:hover { background-color: #54aef8; }
 
 .loader {
-    position: absolute;
+    position: relative;
     left: 60%;
-    top: 50%;
+    top: 250px;
     z-index: 1;
     margin: -75px 0 0 -75px;
     border: 16px solid #f3f3f3;

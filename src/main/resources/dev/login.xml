@@ -22,6 +22,11 @@
   <update id="nickname-update" parameterType="hashmap" >
   	UPDATE `USER` SET `NICKNAME` = #{nickname}, `POWER` = 1 WHERE `NO` = ${no}
   </update>
+  
+  <select id="power" parameterType="String" resultType="integer">
+  	SELECT `POWER` FROM USER WHERE `NO` = ${value}
+  </select>
+  
   <select id="test" resultType="hashmap">
   	SELECT 1 as cnt
   </select>

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
 import dev.blackping.shop.dao.AutoDAOInterface;
-import dev.blackping.shop.listener.ConstructListener;
 import dev.blackping.shop.object.SessionObject;
 import dev.blackping.shop.util.Mybatis;
 import net.sf.json.JSONObject;
@@ -38,6 +37,7 @@ public class DataService {
 				HashMap<String, Object> check = adi.sql("UD", "login", "nickname-update", paramsMap);
 				if(Mybatis.findInt(check) > 0) {
 					sessionObject.setNickname(nickname);
+					sessionObject.setPower(1);
 					session.setAttribute("SESSION_OBJECT", sessionObject);
 					resultMap.put("msg", "닉네임 인증에 성공했습니다.");
 					resultMap.put("status", true);
@@ -61,15 +61,23 @@ public class DataService {
 			paramsMap.put("no", sessionObject.getId());
 			paramsMap.put("roomname", roomname);
 			
-			HashMap<String, Object> check = adi.sql("IS", "topic", "room-insert", paramsMap);
-			if(Mybatis.findInt(check) > 0) {
-				session.setAttribute("SESSION_OBJECT", sessionObject);
-				resultMap.put("msg", "구독 채널이 추가됐습니다.");
-				resultMap.put("status", true);
-				HashMap<String, WebSocketSession> SocketMap = new HashMap<String, WebSocketSession>();
-				ConstructService.SocketServer.put(Mybatis.findString(adi.sql("SO", "topic", "room-all", null)), SocketMap);
+			int count = 0;
+			count = Mybatis.findInt(adi.sql("SO", "topic", "topic-count", sessionObject.getId()));
+			
+			if(count < 5) {
+				count = Mybatis.findInt(adi.sql("IS", "topic", "room-insert", paramsMap));
+				if(count > 0) {
+					session.setAttribute("SESSION_OBJECT", sessionObject);
+					resultMap.put("msg", "구독 채널이 추가됐습니다.");
+					resultMap.put("status", true);
+					HashMap<String, WebSocketSession> SocketMap = new HashMap<String, WebSocketSession>();
+					ConstructService.SocketServer.put(Mybatis.findString(adi.sql("SO", "topic", "room-all", null)), SocketMap);
+				} else {
+					resultMap.put("status", false);
+				}
 			} else {
 				resultMap.put("status", false);
+				resultMap.put("msg", "구독 채널은 5개까지 만들 수 있습니다.");
 			}
 		} catch(DataAccessException e) {
 			resultMap.put("status", false);
@@ -88,6 +96,7 @@ public class DataService {
 			if(session.getAttribute("SESSION_OBJECT") != null) {
 				SessionObject sessionObject = (SessionObject)session.getAttribute("SESSION_OBJECT");
 				resultMap2 = adi.sql("SL", "topic", "room-topic", sessionObject.getId().toString());
+				resultMap.put("id", sessionObject.getId());
 			}
 			
 			resultMap.put("select", resultMap1);
@@ -110,24 +119,51 @@ public class DataService {
 		
 		try {
 			
-			int count = Mybatis.findInt(adi.sql("SO", "topic", "room-check", ParamMap));
+			int count = 0;
 			
-			if(count > 0) { // 구독중
-				adi.sql("KILL", "topic", "topic-kill", ParamMap);
-				BufferMap.put("msg", "채널 구독을 취소했습니다.");
-			} else { // 구독중 아님
-				adi.sql("IS", "topic", "topic-add", ParamMap);
-				BufferMap.put("msg", "채널을 구독했습니다.");
+			count = Mybatis.findInt(adi.sql("SO", "login", "power", sessionObject.getId()));
+			
+			if(count > 0) {
+				count = Mybatis.findInt(adi.sql("SO", "topic", "room-check", ParamMap));
+				if(count > 0) { // 구독중
+					adi.sql("KILL", "topic", "topic-kill", ParamMap);
+					BufferMap.put("msg", "채널 구독을 취소했습니다.");
+				} else { // 구독중 아님
+					adi.sql("IS", "topic", "topic-add", ParamMap);
+					BufferMap.put("msg", "채널을 구독했습니다.");
+				}
+				
+				BufferMap.put("status", true);
+			} else {
+				BufferMap.put("status", false);
+				BufferMap.put("msg", "닉네임 인증이 필요합니다.");
 			}
-			
-			BufferMap.put("status", true);
 		} catch (DataAccessException e) {
 			BufferMap.put("status", false);
 		}
 		
-		System.out.println("test");
 		System.out.println(BufferMap.toString());
 		
 		return JSONObject.fromObject(BufferMap).toString();
+	}
+	
+	public String topicDel(HttpSession session, String param_no) {
+		HashMap<String, Object> BufferMap = new HashMap<String, Object>();
+		try {
+			SessionObject sessionObject = (SessionObject) session.getAttribute("SESSION_OBJECT");
+			BufferMap.put("id", sessionObject.getId());
+			BufferMap.put("no", param_no);
+			
+			// 업데이트 로직 작성
+			int Check = Mybatis.findInt(adi.sql("UD", "topic", "topic-update", BufferMap));
+			if(Check > 0) {
+				
+			} else {
+				
+			}
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return "test";
 	}
 }

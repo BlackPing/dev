@@ -64,8 +64,10 @@
 							</thead>
 						</table>
 						<div id="app-topic"></div>
-						<div id="app-chat" class="display-none"></div>
-						<textarea id="chatting" rows="5" cols="40" wrap="hard"></textarea>
+						<div id="app-chat" class="hidden"></div>
+						<div id="app-textarea">
+							<textarea id="chatting" rows="5" cols="40" wrap="hard"></textarea>
+						</div>
 					</c:otherwise>
 				</c:choose>
 			</div>

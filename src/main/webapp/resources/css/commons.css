@@ -10,6 +10,7 @@ button { all: unset; }
 
 .text-center { text-align: center; }
 .display-none { display: none; }
+.hidden { visibility: hidden; }
 .opacity { opacity: 0.5; }
 .font-weight { font-weight: 700; }
 .color-green { color: green; }

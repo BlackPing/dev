@@ -37,3 +37,10 @@ JNDI 설정
 카카오톡 로그인 500 PROFILEIMAGE ERROR 수정
 다른 브라우저에서 접속시 소켓 서버 접속 차단 ( 동접 불가 )
 웹 소켓 접속 요청시 로딩 구현
+
+## development 2019-10-01
+동시 접속 체크 로직 변경 Session 체크에서 닉네임 체크로
+채팅방 CSS 요소 변경 - 스크롤 처리 오류 수정
+SocketHandler Code ReFactoring
+채널 구독 권한 체크
+1계정당 구독 채널 생성 5개 제한

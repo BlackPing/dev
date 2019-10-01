@@ -49,22 +49,24 @@ function select() {
 		if(Socket == undefined) {
 			return;
 		}
-
+		
 		data = JSON.parse(data);
 		$('#channel').empty();
 		$('#app-topic').empty();
 		let html;
 		let inghtml;
+		console.log(data);
 		for(var i = 0; i < data.select.result.length; i++) {
 			html = '<div class="channel-topic">';
 			html += '<span class="channel-no">NO: ' + data.select.result[i].NO + '</span>';
 			html += '<span class="channel-master">Master: ' + data.select.result[i].NICKNAME + '</span>';
+			if(data.select.result[i].USER_NO == data.id) html += '<span class="channel-delete">삭제</span>';
 			html += '<div class="channel-title">' + data.select.result[i].TITLE + '</div>';
 			
 			if(data.topic.result != undefined) {
 				for(var j = 0; j < data.topic.result.length; j++) {
 					if(data.topic.result[j].TOPIC_NO == data.select.result[i].NO) {
-						html += '<button class="channel-btn"><img src="/res/img/checked-symbol.png" height="20px" style="margin-top: 2px;"></button>';
+						html += '<button class="channel-btn"><img src="/res/img/checked-symbol.png" height="20px"></button>';
 						inghtml = '<div class="app-topic-list">';
 						inghtml += '<span>NO: ' + data.select.result[i].NO + '</span> ';
 						inghtml += '<span>' + data.select.result[i].TITLE + '</span><span class="topic-up">참여</span>';
@@ -74,6 +76,7 @@ function select() {
 					}
 				}
 			}
+			
 			if(!flag) {
 				html += '<button class="channel-btn">구독</button>';
 			}
@@ -101,6 +104,22 @@ function select() {
 			});
 		});
 		
+		$('.channel-delete').off().on('click', function(e) {
+			if(confirm("정말 삭제하시겠습니까?")) {
+				let no = $(this).parent().children('.channel-delete');
+				getData("POST", "/topicdel", {"no": no}, function(data) {
+					data = JSON.parse(data);
+					if(data.status == false) {
+						if(!getMessage(data.msg)) {
+							alert("네트워크 오류입니다.");
+						}
+					} else {
+						getMessage(data.msg);
+					}
+				});
+			}
+		});
+		
 		$('.app-topic-list span').off().on('click', function(e) {
 			let no = $(this).parent().children('span').eq(0).text();
 			let title = $(this).parent().children('span').eq(1).text();
@@ -112,11 +131,11 @@ function select() {
 				list.children().removeClass('opacity');
 				list.children().addClass('opacity');
 				$('td[data-topic="' + no + '"]').removeClass('opacity');
-				app.removeClass('display-none');
-				$('#app-topic').addClass('display-none');
+				app.removeClass('hidden');
+				$('#app-topic').addClass('hidden');
 				
-				app.children().addClass('display-none');
-				$('.app-chat[data-topic="' + no + '"]').removeClass('display-none');
+				app.children().addClass('hidden');
+				$('.app-chat[data-topic="' + no + '"]').removeClass('hidden');
 				
 				textarea = no;
 				return;
@@ -128,11 +147,11 @@ function select() {
 				app.append('<div class="app-chat" data-topic="' + no + '"><div class="ChatList"></div><div class="UserList"><div class="UserCount">채팅중인 회원 : <span class="color-red"><span class="Counting">0</span> 명</span></div><div class="UsernickName"></div></div></div>');
 				list.append(html);
 				
-				app.removeClass('display-none');
-				$('#app-topic').addClass('display-none');
+				app.removeClass('hidden');
+				$('#app-topic').addClass('hidden');
 				
-				app.children().addClass('display-none');
-				$('.app-chat[data-topic="' + no + '"]').removeClass('display-none');
+				app.children().addClass('hidden');
+				$('.app-chat[data-topic="' + no + '"]').removeClass('hidden');
 				// 첫입장
 				textarea = no;
 				sendMessage("connect", no, "Connect!!!");
@@ -150,18 +169,18 @@ function select() {
 					list.children().addClass('opacity');
 					$(this).removeClass('opacity');
 					
-					app.addClass('display-none');
-					$('#app-topic').removeClass('display-none');
+					app.addClass('hidden');
+					$('#app-topic').removeClass('hidden');
 				} else {
 					list.children().removeClass('opacity');
 					list.children().addClass('opacity');
 					$(this).removeClass('opacity');
 					
-					app.removeClass('display-none');
-					$('#app-topic').addClass('display-none');
+					app.removeClass('hidden');
+					$('#app-topic').addClass('hidden');
 					
-					app.children().addClass('display-none');
-					$('.app-chat[data-topic="' + topic + '"]').removeClass('display-none');
+					app.children().addClass('hidden');
+					$('.app-chat[data-topic="' + topic + '"]').removeClass('hidden');
 					
 					textarea = topic;
 				}
@@ -220,8 +239,8 @@ function socket() {
 }
 
 function Connect() {
-	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-//	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+//	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
 		$('.loader').addClass('display-none');

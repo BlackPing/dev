@@ -72,7 +72,7 @@ function nickname(event) {
 		html += '<input id="nickname-text" type="text" maxlength="10" oninput="MaxLength(this)" />';
 		html += '<span id="nick-cert-btn">인증</span>';
 		$('#nickname-modal').append(html);
-		$('#nickname-modal').offset({left: 150, top: 220});
+		$('#nickname-modal').offset({left: event.pageX, top: event.pageY + 49});
 		$('#nickname-modal').animate({opacity: "0.1"}, 1);
 		$('#nickname-modal').animate({ top: "-=49px", opacity: "1" }, 200);
 		$("#nick-cert-btn").off().on("click", function(event) {

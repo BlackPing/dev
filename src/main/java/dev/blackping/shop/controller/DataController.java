@@ -88,4 +88,19 @@ public class DataController {
 			e.printStackTrace();
 		}
 	}
+	
+	@PostMapping(value="/topicdel")
+	public void topicdel(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+		try {
+			if(session.getAttribute("SESSION_OBJECT") == null) {
+				res.getWriter().write(HttpUtil.ErrorMsg("LoginCheckMsg").toString());
+			} else if(HttpUtil.ParameterAss(req, "no")) {
+				res.getWriter().write(ds.topicDel(session, req.getParameter("no")));
+			} else {
+				res.getWriter().write(ConstructListener.Status.toString());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

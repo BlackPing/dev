@@ -21,7 +21,7 @@ function getWeek(year, month, day) {
 function getData(type, url, params, callback) {
 	$.ajax({"type": type, "url": url, "data": params}).
 	done(callback).
-	fail(function() {
+	fail(function(data) {
 		alert("네트워크 오류 발생");
 	});
 }
@@ -29,7 +29,7 @@ function getData(type, url, params, callback) {
 function a_getData(type, url, params, callback) {
 	$.ajax({"type": type, "url": url, "data": params, "async": false}).
 	done(callback).
-	fail(function() {
+	fail(function(data) {
 		alert("네트워크 오류 발생");
 	});
 }
