@@ -7,16 +7,36 @@
   	INSERT INTO TOPIC(`TITLE`, `USER_NO`) VALUES(#{roomname}, ${no})
   </insert>
   <select id="room-select" resultType="hashmap">
-  	SELECT TOPIC.`NO`, TOPIC.USER_NO, TOPIC.`TITLE`, USER.NICKNAME FROM TOPIC LEFT JOIN USER ON TOPIC.USER_NO = USER.NO  WHERE `DELYN` = 'N'
+	SELECT TOPIC.`NO`, TOPIC.`TITLE`, USER.NICKNAME
+	FROM TOPIC
+	LEFT JOIN USER
+	ON TOPIC.USER_NO = USER.NO
+	WHERE `DELYN` = 'N'
+	<if test="search != null">
+		AND `TITLE` LIKE '%${search}%'
+  	</if>
   </select>
-  <select id="room-topic" parameterType="String" resultType="hashmap">
-	SELECT TOPIC_NO
+  
+  <select id="room-topic" parameterType="hashmap" resultType="hashmap">
+	SELECT TOPIC_NO, TITLE
 	FROM USER_TOPIC AS a
 	JOIN USER AS b
 	ON a.USER_NO = b.NO
 	JOIN TOPIC AS c
 	ON a.TOPIC_NO = c.`NO`
-	WHERE a.USER_NO = ${value}
+	WHERE c.DELYN = 'N' AND a.USER_NO = ${id}
+	<if test="search != null">
+		AND `TITLE` LIKE '%${search}%'
+  	</if>
+  </select>
+  
+  <select id="room-edit" parameterType="hashmap" resultType="hashmap">
+	SELECT `NO`
+	FROM TOPIC
+	WHERE DELYN = 'N' AND USER_NO = ${id}
+	<if test="search != null">
+		AND `TITLE` LIKE '%${search}%'
+  	</if>
   </select>
   
   <select id="room-check" parameterType="hashmap" resultType="integer">

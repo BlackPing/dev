@@ -69,7 +69,7 @@ function nickname(event) {
 		modal.append(element);
 		let html = '<span style="cursor: default;">닉네임 변경</span>';
 		html += '<img src="/res/img/cancel.png" id="nickname-cancel">';
-		html += '<input id="nickname-text" type="text" maxlength="10" oninput="MaxLength(this)" />';
+		html += '<input id="nickname-text" type="text" maxlength="8" oninput="MaxLength(this)" />';
 		html += '<span id="nick-cert-btn">인증</span>';
 		$('#nickname-modal').append(html);
 		$('#nickname-modal').offset({left: event.pageX, top: event.pageY + 49});

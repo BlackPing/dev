@@ -44,3 +44,10 @@ JNDI 설정
 SocketHandler Code ReFactoring
 채널 구독 권한 체크
 1계정당 구독 채널 생성 5개 제한
+
+## development 2019-10-02
+구독 채널 삭제
+채널 리스트 로직 변경
+채널 리스트, 구독한 채널 리스트 프로세스 수정
+리스트 검색 기능 추가
+채널 리스트 클라이언트 Code ReFactoring

@@ -46,7 +46,8 @@
 					<c:if test="${session.power eq 1}">
 						<button id="topic-create-btn" class="text-center" onclick="topicadd(event)"><span>구독 채널 만들기</span><img src="/res/img/square-add-button.png" class="topic-plus"></button>
 					</c:if>
-					<div id="channel-list" class="text-center"><span>채널 리스트</span></div>
+					<div id="channel-list" class="text-center"><span>채널 리스트</span><img id="select-refresh" title="새로고침" class="refresh" src="/res/img/refresh-arrow.png"></div>
+					<input id="search-text" type="text"><button id="search">검색</button>
 					<div id="channel"></div>
 				</div>
 			</div>

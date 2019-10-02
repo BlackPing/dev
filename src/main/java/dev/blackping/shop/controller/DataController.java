@@ -53,9 +53,22 @@ public class DataController {
 	}
 	
 	@PostMapping(value="/topicsl")
-	public void topicselect(HttpSession session, HttpServletResponse res) {
+	public void topicselect(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
 		try {
-			res.getWriter().write(ds.topicSelect(session));
+			if(HttpUtil.ParameterAss(req, "search")) {
+				res.getWriter().write(ds.topicSelect(session, req.getParameter("search")));
+			} else {
+				res.getWriter().write(ds.topicSelect(session, ""));
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostMapping(value="/topicDynamic")
+	public void topicDynamicOne(HttpSession session, HttpServletResponse res) {
+		try {
+			res.getWriter().write(ds.topicDaynamicOne(session));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

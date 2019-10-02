@@ -52,11 +52,11 @@ public class LoginController {
 			
 			httpMap = HttpUtil.kakaoApi(token_url);
 			
-			String userInfo_url = "https://kapi.kakao.com/v2/user/me";
-			userInfo_url += "?access_token=" + httpMap.get("access_token").toString();
 			
 			boolean check = Boolean.valueOf(httpMap.get("status").toString());
 			if(check) {
+				String userInfo_url = "https://kapi.kakao.com/v2/user/me";
+				userInfo_url += "?access_token=" + httpMap.get("access_token").toString();
 				
 				session.setAttribute("access_token", httpMap.get("access_token").toString());
 				httpMap = HttpUtil.kakaoApi(userInfo_url);

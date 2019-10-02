@@ -1,5 +1,6 @@
 package dev.blackping.shop.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -86,21 +87,63 @@ public class DataService {
 		return JSONObject.fromObject(resultMap).toString();
 	}
 	
-	public String topicSelect(HttpSession session) {
+	public String topicSelect(HttpSession session, String search) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		HashMap<String, Object> resultMap1 = new HashMap<String, Object>();
-		HashMap<String, Object> resultMap2 = new HashMap<String, Object>();
+		HashMap<String, Object> BufferMap = new HashMap<String, Object>();
+		ArrayList<HashMap<String, Object>> BufferList = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> ParamMap = new HashMap<String, Object>();
+		HashMap<String, Object> createMap = new HashMap<String, Object>();
+		
 		try {
-			resultMap1 = adi.sql("SL", "topic", "room-select", null);
-			
+			if(!search.isEmpty()) BufferMap.put("search", search);
+			resultMap.put("select", Mybatis.findList(adi.sql("SL", "topic", "room-select", BufferMap)));
 			if(session.getAttribute("SESSION_OBJECT") != null) {
 				SessionObject sessionObject = (SessionObject)session.getAttribute("SESSION_OBJECT");
-				resultMap2 = adi.sql("SL", "topic", "room-topic", sessionObject.getId().toString());
-				resultMap.put("id", sessionObject.getId());
+				BufferMap.put("id", sessionObject.getId());
+				BufferList = Mybatis.findList(adi.sql("SL", "topic", "room-topic", BufferMap));
+				
+				String key = "";
+				for(int i = 0; i < BufferList.size(); i++) {
+					key = BufferList.get(i).get("TOPIC_NO").toString();
+					ParamMap.put(key, true);
+				}
+				
+				BufferList = Mybatis.findList(adi.sql("SL", "topic", "room-edit", BufferMap));
+				key = "";
+				for(int i = 0; i < BufferList.size(); i++) {
+					key = BufferList.get(i).get("NO").toString();
+					createMap.put(key, true);
+				}
+			}
+			resultMap.put("topic", ParamMap);
+			resultMap.put("create", createMap);
+			resultMap.put("status", true);
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+			resultMap.put("status", false);
+		}
+		
+		return JSONObject.fromObject(resultMap).toString();
+	}
+	
+	public String topicDaynamicOne(HttpSession session) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		HashMap<String, Object> BufferMap = new HashMap<String, Object>();
+		HashMap<String, Object> ParamMap = new HashMap<String, Object>();
+		ArrayList<HashMap<String, Object>> BufferList = new ArrayList<HashMap<String, Object>>();
+		try {
+			SessionObject sessionObject = (SessionObject)session.getAttribute("SESSION_OBJECT");
+			ParamMap.put("id", sessionObject.getId());
+			BufferList = Mybatis.findList(adi.sql("SL", "topic", "room-topic", ParamMap));
+			resultMap.put("topic", BufferList);
+			
+			String key;
+			for(int i = 0; i < BufferList.size(); i++) {
+				key = BufferList.get(i).get("TOPIC_NO").toString();
+				BufferMap.put(key, ConstructService.SocketServer.get(key).size());
 			}
 			
-			resultMap.put("select", resultMap1);
-			resultMap.put("topic", resultMap2);
+			resultMap.put("account", BufferMap);
 		} catch(DataAccessException e) {
 			resultMap.put("status", false);
 		}
@@ -149,21 +192,23 @@ public class DataService {
 	
 	public String topicDel(HttpSession session, String param_no) {
 		HashMap<String, Object> BufferMap = new HashMap<String, Object>();
+		HashMap<String, Object> ParamMap = new HashMap<String, Object>();
 		try {
 			SessionObject sessionObject = (SessionObject) session.getAttribute("SESSION_OBJECT");
 			BufferMap.put("id", sessionObject.getId());
 			BufferMap.put("no", param_no);
 			
-			// 업데이트 로직 작성
 			int Check = Mybatis.findInt(adi.sql("UD", "topic", "topic-update", BufferMap));
 			if(Check > 0) {
-				
+				ParamMap.put("status", true);
+				ParamMap.put("msg", "구독 채널을 삭제했습니다.");
 			} else {
-				
+				ParamMap.put("status", false);
 			}
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
-		return "test";
+		
+		return JSONObject.fromObject(ParamMap).toString();
 	}
 }

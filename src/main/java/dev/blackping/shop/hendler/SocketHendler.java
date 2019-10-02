@@ -44,33 +44,34 @@ public class SocketHendler extends TextWebSocketHandler {
 			
 			SessionObject sessionObject = (SessionObject) sessionMap.get("SESSION_OBJECT");
 			
-			
-			System.out.println(sessionMap.toString());
-			if(!UserMap.isEmpty()) {
-				
-				boolean flag = true;
-				for(String key : UserMap.keySet()) {
-					CheckMap = UserMap.get(key);
+			if(sessionObject.getPower() > 0 ) {
+				System.out.println(sessionMap.toString());
+				if(!UserMap.isEmpty()) {
 					
-					if(CheckMap.get("session").toString().equals(sessionObject.getId())) {
-						flag = false;
-						break;
+					boolean flag = true;
+					for(String key : UserMap.keySet()) {
+						CheckMap = UserMap.get(key);
+						
+						if(CheckMap.get("session").toString().equals(sessionObject.getId())) {
+							flag = false;
+							break;
+						}
 					}
+					
+					BufferMap.put("room", "");
+					BufferMap.put("session", sessionObject.getId());
+					UserMap.put(session.getId(), BufferMap);
+					if(!flag) {  // 동시 접속자 close 처리
+						JSONObject messageMap = new JSONObject();
+						messageMap.put("type", "error");
+						messageMap.put("msg", "다른 브라우저에서 실행중입니다.");
+						session.sendMessage(new TextMessage(messageMap.toString()));
+					}
+				} else { // 서버 처음 켜지고 처음 입장할때만 발동
+					BufferMap.put("room", "");
+					BufferMap.put("session", sessionObject.getId());
+					UserMap.put(session.getId(), BufferMap);
 				}
-				
-				BufferMap.put("room", "");
-				BufferMap.put("session", sessionObject.getId());
-				UserMap.put(session.getId(), BufferMap);
-				if(!flag) {  // 동시 접속자 close 처리
-					JSONObject messageMap = new JSONObject();
-					messageMap.put("type", "error");
-					messageMap.put("msg", "다른 브라우저에서 실행중입니다.");
-					session.sendMessage(new TextMessage(messageMap.toString()));
-				}
-			} else { // 서버 처음 켜지고 처음 입장할때만 발동
-				BufferMap.put("room", "");
-				BufferMap.put("session", sessionObject.getId());
-				UserMap.put(session.getId(), BufferMap);
 			}
 			
 		}
