@@ -12,13 +12,14 @@
 		<script type="text/javascript" src="/res/js/jquery-3.4.1.min.js"></script>
 		<script type="text/javascript" src="/res/js/func.js"></script>
 		<script type="text/javascript" src="/res/js/topic.js"></script>
+		<script type="text/javascript" src="/res/js/jscolor.js"></script>
 		<script type="text/javascript" src="/res/js/start.js"></script>
 		<script></script>
 	</head>
 	<body>
 		<c:set var="session" value="${sessionScope.SESSION_OBJECT}" />
-		<jsp:include page="/resources/jsp/header.jsp" flush="false" />
 		
+		<jsp:include page="/resources/jsp/header.jsp" flush="false" />
 		<div id="container">
 			<div class="loader display-none"></div>
 			<div id="left-container">
@@ -67,15 +68,60 @@
 						<div id="app-topic"></div>
 						<div id="app-chat" class="hidden"></div>
 						<div id="app-textarea">
-							<textarea id="chatting" rows="5" cols="40" wrap="hard"></textarea>
+							<div>
+								<div class="display-inline">
+									글꼴
+									<select id="font-family" onchange="CattingOption()">
+										<option>굴림</option>
+										<option>바탕</option>
+										<option>돋움</option>
+										<option>궁서</option>
+										<option>맑은 고딕</option>
+									</select>
+								</div>
+								<div class="display-inline">
+									크기
+									<select id="font-size"  onchange="CattingOption()">
+										<c:forEach var="i" begin="8" end="16">
+											<c:choose>
+												<c:when test="${i eq 9}"><option selected>${i}pt</option></c:when>
+												<c:otherwise><option>${i}pt</option></c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="display-inline">
+									색상
+									<input id="font-color" style="width: 50px;" class="jscolor" value="000000" onchange="CattingOption()" readonly>
+								</div>
+								<div class="display-inline">
+									배경
+									<input id="back-color" style="width: 50px;" class="jscolor" value="FFFFFF" onchange="CattingOption()" readonly>
+								</div>
+								<button id="clean">청소</button>
+								알림 ON/OFF<input id="call" type="checkbox">
+							</div>
+							<div class="display-inline" style="position: relative; bottom: 40px;">
+								<div>입력대상</div>
+								<select id="send-type">
+									<option>모두에게</option>
+								</select>
+							</div>
+							<textarea id="chatting" rows="5" cols="40" wrap="hard" class="display-inline" maxlength="200" onchange="MaxLength(this)"></textarea>
+							<div class="display-inline" style="position: relative; bottom: 40px;">
+								<div><div style="width: 13px; height: 10px" class="display-inline"><strong>B</strong></div><input id="font-strong" type="checkbox" onchange="CattingOption()"></div>
+								<div><div style="width: 13px; height: 10px; font-style: italic;" class="display-inline">I</div><input id="font-i" type="checkbox" onchange="CattingOption()"></div>
+								<div><div style="width: 13px; height: 10px; text-decoration: underline;" class="display-inline">U</div><input id="font-underline" type="checkbox" onchange="CattingOption()"></div>
+							</div>
 						</div>
 					</c:otherwise>
 				</c:choose>
 			</div>
 		</div>
+		<jsp:include page="/resources/jsp/footer.jsp" flush="false" />
 		<div id="modal"></div>
 		<div id="topic-add-modal"></div>
 		<div id="modal-cancel"></div>
-		<jsp:include page="/resources/jsp/footer.jsp" flush="false" />
+		<div id="user-add-modal"></div>
 	</body>
 </html>

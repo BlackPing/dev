@@ -15,6 +15,8 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.core.JsonParser;
+
 import dev.blackping.shop.dao.AutoDAOInterface;
 import dev.blackping.shop.object.SessionObject;
 import dev.blackping.shop.service.ConstructService;
@@ -92,13 +94,13 @@ public class SocketHendler extends TextWebSocketHandler {
 			 *******************/
 			String Message = message.getPayload().toString();
 			System.out.println("msg : " + Message);
-			String[] spit =  Message.split(",");
+			String[] spit =  Message.split("/");
 			if(spit.length > 2) {
 				String type = spit[0];
 				String roomNumber = spit[1];
-				int typeLength = spit[0].length() + spit[1].length() + 2;
+				JSONObject Option = JSONObject.fromObject(spit[2]);
 				
-				Message = Message.substring(typeLength);
+				Message = Message.substring(spit[0].length() + spit[1].length() + spit[2].length() + 3, Message.length());
 				
 				HashMap<String, WebSocketSession> SocketRoom = ConstructService.SocketServer.get(roomNumber);
 				SessionObject sessionObject = (SessionObject) sessionMap.get("SESSION_OBJECT");
@@ -113,7 +115,7 @@ public class SocketHendler extends TextWebSocketHandler {
 						if(count > 0) {
 							SocketRoom.put(session.getId(), session);
 							
-							msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 입장하셨습니다.</div>";
+							msg = "<div class=\"text-center color-green\" style=\"font-weight: 700;\" >" + sessionObject.getNickname() + " 님이 입장하셨습니다.</div>";
 							messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", msg, "type", "connect",
 									"count", SocketRoom.size(), "userList", UserList(roomNumber));
 							
@@ -133,7 +135,7 @@ public class SocketHendler extends TextWebSocketHandler {
 					case "disconnect":
 						SocketRoom.remove(session.getId());
 						
-						msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
+						msg = "<div class=\"text-center color-green\" style=\"font-weight: 700;\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
 						messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", msg, "type", "connect",
 								"count", SocketRoom.size(), "userList", UserList(roomNumber));
 						
@@ -147,7 +149,7 @@ public class SocketHendler extends TextWebSocketHandler {
 						break;
 						
 					case "send":
-						messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", Message, "type", "send");
+						messageMap = CreateMap("roomNumber", roomNumber, "nickname", sessionObject.getNickname(), "msg", TagMessage(Option, sessionObject.getNickname(), Message), "type", "send");
 						
 						RoomSend(SocketRoom, messageMap);
 						break;
@@ -179,7 +181,7 @@ public class SocketHendler extends TextWebSocketHandler {
 		if("".equals(roomList[0])) { 
 			Length = 0;
 		} else {
-			String msg = "<div class=\"text-center color-green\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
+			String msg = "<div class=\"text-center color-green\" style=\"font-weight: 700;\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
 			messageMap = CreateMap("nickname", sessionObject.getNickname(), "msg", msg, "type", "disconnect");
 			
 			HashMap<String, WebSocketSession> SocketRoom;
@@ -203,6 +205,42 @@ public class SocketHendler extends TextWebSocketHandler {
 		JSONObject messageMap = new JSONObject();
 		messageMap = CreateMap("type", "error", "msg", "전송 오류 발생");
 		session.sendMessage(new TextMessage(messageMap.toString()));
+	}
+	
+	public String TagMessage(JSONObject Option, String Nickname, String msg) {
+		boolean flag = false;
+		String back_color = "";
+		String value;
+		String Style = "<div class=\"chatline\" style=\"";
+		for(Object key : Option.keySet()) {
+			value = Option.get(key).toString();
+			
+			if("background-color".equals(key)) {
+				flag = true;
+				back_color = value;
+				continue;
+			}
+			
+			if("true".equals(value)) {
+				if("font-weight".equals(key))  value = "700";
+				else if("font-style".equals(key))  value = "italic";
+				else if("text-decoration".equals(key))  value = "underline";
+			}
+			
+			if(!"false".equals(value))
+				Style += key + ": " + value + ";";
+		}
+		
+		Style += "\">";
+		
+			
+		Style += "<div class=\"chatnick display-inline\" style=\"width: 120px; color: black; font-weight: normal; font-style: normal; text-decoration: none;";
+		if(flag) Style += "background-color: " + back_color + ";";
+		Style += "\">";
+		Style += "<span style=\"float: left\">" + Nickname + "</span><span style=\"float: right\">▶</span></div>";
+		Style += "<div class=\"chatmsg display-inline\"><span style=\"float: left\">"+ msg + "</span></div></div>";
+		System.out.println(Style);
+		return Style;
 	}
 	
 	public boolean SessionCheck(WebSocketSession session) {

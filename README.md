@@ -51,3 +51,8 @@ SocketHandler Code ReFactoring
 채널 리스트, 구독한 채널 리스트 프로세스 수정
 리스트 검색 기능 추가
 채널 리스트 클라이언트 Code ReFactoring
+
+## development 2019-10-04
+채팅 출력 스타일 수정
+채팅 입력 타입 추가 글꼴, 색, 굵기등 설정 가능
+SocketHandler 로직 수정

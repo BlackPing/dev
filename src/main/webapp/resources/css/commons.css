@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 html, body { margin: 0px; padding: 0px; }
-header, footer { background-color: #20235e; width: 100%; height: 100px; color: white; text-align: center; }
+header, footer { background-color: #20235e; width: 100%; min-width: 1500px; height: 100px; color: white; text-align: center; }
 footer { float: left; }
 header h1 { margin: 0px; padding-top: 26px; }
 footer p { padding-top: 26px; }
@@ -10,6 +10,7 @@ button { all: unset; }
 
 .text-center { text-align: center; }
 .display-none { display: none; }
+.display-inline { display: inline-block; }
 .hidden { visibility: hidden; }
 .opacity { opacity: 0.5; }
 .font-weight { font-weight: 700; }

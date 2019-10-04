@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
 #login-btn { margin-top: 25px; }
-#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover, #nick-cert-btn:hover, .channel-btn:hover, .ing-btn, .app-topic-list span, #topic-close, #topic-cancel, .User:hover, .channel-delete:hover, #search:hover { cursor: pointer; }
+#login-btn:hover, #topic-create-btn:hover, #cert-btn:hover, #nick-cert-btn:hover, .channel-btn:hover, .ing-btn, .app-topic-list span, #topic-close, #topic-cancel, .User:hover, .channel-delete:hover, #search:hover, #clean:hover { cursor: pointer; }
 #left-container { float: left; display: inline-block; }
-#container { margin-left: calc(50% - 600px); width: 1200px; height: 890px; }
+#container { margin-left: 300px; width: 1200px; height: 890px; }
 #profile-container { margin: 30px 0px 0px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; height: 100px; }
 #topic-container { margin: 30px 0px 30px 30px; padding: 20px; border: 1px solid #20235e; width: 222px; }
 #socket-container { position: relative; float: left; margin: 30px 0px 30px 30px; width: 800px; height: 450px; }
@@ -84,7 +84,7 @@ table { padding: 0px; margin: 0px; }
 .app-chat { position: absolute; width: 100%; height: 100%;}
 #app-chat { position: absolute; }
 #app-topic { overflow-x: auto; }
-#app-textarea { position: absolute; bottom: 0;}
+#app-textarea { position: absolute; bottom: -30px;}
 #chatting { margin-top: 10px; width: 600px; height: 100px; resize: none; }
 
 .app-topic-list { background-color: #a8a8a8; width: 610px; padding: 10px; margin: 10px; margin-left: 80px; border-radius: 10px; color: white; }
@@ -95,7 +95,6 @@ table { padding: 0px; margin: 0px; }
 #modal-cancel div:hover { background-color: #078aeb; }
 
 .ChatList { display: inline-block; width: calc(100% - 230px); height: calc(100% - 10px); overflow-y: scroll;}
-.ChatList div { margin-left: 30px; }
 .UserList { margin: 0px 10px 0px 10px; display: inline-block; width: 210px; height: calc(100% - 10px); overflow-y: scroll;}
 .UserCount { margin: 5px 10px 5px 0px; text-align: center; padding: 5px 10px 5px 10px; border: 1px solid #f49520; border-radius: 3px; background-color: #fcfaa0; cursor: default; }
 
@@ -130,4 +129,10 @@ table { padding: 0px; margin: 0px; }
 .refresh { float: right; margin: 3px 5px 0px 0px; }
 .refresh:hover { cursor: pointer; animation: spin 2s linear infinite; }
 
+#clean { border: 1px solid black; box-sizing: border-box; }
+
 #search { margin: 3px; width: 38px; height: 23px; font-size: 14px; background-color: #CC0000; color: white; text-align: center; }
+.chatline { margin: 5px 0px 0px 10px; }
+.chatnick { margin-right: 10px; }
+.chatmsg { word-break: break-all; width: calc(100% - 130px) }
+.connect { padding: 10px; margin-bottom: 10px; border: 1px solid black; }

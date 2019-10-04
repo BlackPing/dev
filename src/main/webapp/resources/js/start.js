@@ -3,11 +3,15 @@ let sendMessage = function(type, roomNumber, msg) { };
 let onMessage = function(msg) { };
 let textarea = 0;
 let status = false;
+let click_index = 0;
+let Option = {};
+
 $(document).ready(function() {
 //	async function asyncOpen() { // 비동기 처리
 //		const t1 = await socket();
 //		const t2 = await select();
 //	}
+	CattingOption();
 	select();
 	socket();
 	
@@ -27,7 +31,7 @@ $(document).ready(function() {
         		
         		if(text == "" || text == undefined) return;
         		else if(textarea == 0) return;
-        		sendMessage("send", textarea, text);
+        		sendMessage("send", textarea, text, Option);
         	} else {
         		let maxRows = $('textarea').attr('rows');
         		let spit = $('textarea').val().split('\n');
@@ -60,7 +64,6 @@ function select(search) {
 
 	return getData("POST", "/topicsl", {"search": search}, function(data) {
 		data = JSON.parse(data);
-		console.log(data);
 		if(data.status == false) {
 			if(!getMessage(data.msg)) {
 				alert("네트워크 오류입니다.");
@@ -154,7 +157,6 @@ function topicselect() {
 				topicselect();
 			});
 			
-			let room_index = 0;
 			$('.channel-btn').off().on('click', function(e) {
 				let no = $(this).parent().children('.channel-no').text();
 				no = no.substr(4, no.length);
@@ -177,6 +179,11 @@ function topicselect() {
 				let app = $('#app-chat');
 				let list = $('#topic-connectionlist tr');
 				no = no.substr(4, no.length);
+				
+				if(list.children().length > 5) {
+					alert("5개의 채널만 이용 가능 합니다.");
+					return;
+				}
 				
 				if($('.app-chat[data-topic="' + no + '"]').length > 0) {
 					list.children().removeClass('opacity');
@@ -203,18 +210,16 @@ function topicselect() {
 					
 					app.children().addClass('hidden');
 					$('.app-chat[data-topic="' + no + '"]').removeClass('hidden');
+					$('.app-chat[data-topic="' + no + '"]').children('.ChatList').append('<div class="text-center connect">' + title + ' 채널 입니다 즐거운 채팅 되세요~!<div>');
 					// 첫입장
 					textarea = no;
-					sendMessage("connect", no, "Connect!!!");
+					click_index = list.children().length - 1;
+					sendMessage("connect", no, "Connect!!!", Option);
 				}
 			
-				if(list.children().length > 5) {
-					alert("5개의 채널만 이용 가능 합니다.");
-					return;
-				}
 				
 				$('td').off().on('click', function() {
-					let click_index = $(this).index();
+					click_index = $(this).index();
 					ChatingView(click_index);
 				});
 				
@@ -227,6 +232,7 @@ function topicselect() {
 					$('td').siblings().addClass('opacity');
 					
 					if(topic == "main") {
+						textarea = 0;
 						app_topic.removeClass('hidden');
 						app_chat.addClass('hidden');
 						
@@ -279,8 +285,8 @@ function topicselect() {
 						// 퇴장
 						// 퇴장 처리시  index chatview 처리
 						$('#topic-close').off().on('click', function(e) {
-							console.log(app);
-							sendMessage("disconnect", app.attr('data-topic'), "Disconnect!!!");
+							ChatingView(--click_index);
+							sendMessage("disconnect", app.attr('data-topic'), "Disconnect!!!", Option);
 							modal.empty();
 							app.remove();
 							$('.app-chat[data-topic="' + app.attr('data-topic') + '"]').remove();
@@ -288,6 +294,11 @@ function topicselect() {
 					}
 				});
 
+				$('#clean').off().on('click', function(e) {
+					if(textarea == 0) return;
+					$('.app-chat[data-topic="' + textarea + '"]').children('.ChatList').empty();
+					$('.app-chat[data-topic="' + textarea + '"]').children('.ChatList').append('<div class="text-center">채팅창을 청소했습니다.</div>');
+				});
 			});
 		}
 	});
@@ -304,14 +315,14 @@ function socket() {
 }
 
 function Connect() {
-//	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
 		$('.loader').addClass('display-none');
 		topicselect();
-		sendMessage = function sendMessage(type, roomNumber, msg) {
-			Socket.send(type + "," + roomNumber + "," + msg);
+		sendMessage = function sendMessage(type, roomNumber, msg, Option) {
+			Socket.send(type + "/" + roomNumber + "/" + JSON.stringify(Option)  + "/" + msg);
 		}
 	}
 	
@@ -340,12 +351,64 @@ function Connect() {
 			C_UserList.children('.UsernickName').empty();
 			C_UserList.children('.UsernickName').append(UserDrawing);
 			C_ChatList.append(message);
+			
+			$('.User').off().on('click', function() {
+				let element = document.createElement('div');
+				element.id = "user-modal";
+				
+				$('#user-add-modal').append(element);
+				let modal = $('#user-modal');
+			});
+
 		} else if(type == "send") {
-			let text = '<div>' + data.nickname + ' : ' + message + '</div>';
-			$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(text);
+			$('.app-chat[data-topic="' + roomNumber + '"]').children('.ChatList').append(message);
+			
+			let P_height = $('.chatmsg').last().parent().height() - 3;
+			$('.chatnick').last().css('position', 'relative');
+			$('.chatnick').last().css('bottom', P_height/2 - $('.chatnick').last().height()/2);
 		}
 		
 		$('.ChatList').scrollTop($('.ChatList').prop('scrollHeight'));
 	}
 	Socket.onmessage = onMessage;
+}
+
+function CattingOption() {
+	let font_family = $('#font-family').val();
+	let font_size = $('#font-size').val();
+//	font_size = font_size.substr(0, font_size.lastIndexOf(' '));
+	let font_color = '#' + $('#font-color').val();
+	let back_color = '#' + $('#back-color').val();
+	let font_strong = $('#font-strong').is(":checked");
+	let font_i = $('#font-i').is(":checked");
+	let font_underline = $('#font-underline').is(":checked");
+	let app = $('#chatting');
+	
+	app.css('font-family', font_family);
+	app.css('font-size', font_size);
+	app.css('color', font_color);
+	if(font_strong)
+		app.css('font-weight', 700);
+	else
+		app.css('font-weight', '');
+	
+	if(font_i)
+		app.css('font-style', 'italic');
+	else
+		app.css('font-style', '');
+	
+	if(font_underline)
+		app.css('text-decoration', 'underline');
+	else
+		app.css('text-decoration', '');
+	
+	Option = {
+			"font-family": font_family,
+			"font-size": font_size,
+			"color": font_color,
+			"font-weight": font_strong,
+			"font-style": font_i,
+			"text-decoration": font_underline,
+			"background-color": back_color
+	}
 }
