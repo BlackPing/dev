@@ -181,16 +181,17 @@ public class SocketHendler extends TextWebSocketHandler {
 		if("".equals(roomList[0])) { 
 			Length = 0;
 		} else {
+			System.out.println("disconnect!!!!");
 			String msg = "<div class=\"text-center color-green\" style=\"font-weight: 700;\" >" + sessionObject.getNickname() + " 님이 퇴장하셨습니다.</div>";
-			messageMap = CreateMap("nickname", sessionObject.getNickname(), "msg", msg, "type", "disconnect");
 			
 			HashMap<String, WebSocketSession> SocketRoom;
 			for(int i = 0; i < Length; i++) {
 				SocketRoom = ConstructService.SocketServer.get(roomList[i]);
+				System.out.println(SocketRoom.toString());
 				SocketRoom.remove(session.getId());
 				
-				messageMap = CreateMap("roomNumber", roomList[i], "count", SocketRoom.size(), "userList", UserList(roomList[i]));
-
+				messageMap = CreateMap("roomNumber", roomList[i], "nickname", sessionObject.getNickname(), "msg", msg, "count", SocketRoom.size(), "userList", UserList(roomList[i]), "type", "disconnect");
+				System.out.println(SocketRoom.toString());
 				RoomSend(SocketRoom, messageMap);
 			}
 		}
@@ -239,7 +240,6 @@ public class SocketHendler extends TextWebSocketHandler {
 		Style += "\">";
 		Style += "<span style=\"float: left\">" + Nickname + "</span><span style=\"float: right\">▶</span></div>";
 		Style += "<div class=\"chatmsg display-inline\"><span style=\"float: left\">"+ msg + "</span></div></div>";
-		System.out.println(Style);
 		return Style;
 	}
 	

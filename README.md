@@ -56,3 +56,4 @@ SocketHandler Code ReFactoring
 채팅 출력 스타일 수정
 채팅 입력 타입 추가 글꼴, 색, 굵기등 설정 가능
 SocketHandler 로직 수정
+새로 고침 버그 수정
