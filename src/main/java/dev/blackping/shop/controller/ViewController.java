@@ -18,9 +18,4 @@ public class ViewController {
 	public String home() {
 		return "home";
 	}
-	
-	@GetMapping(value="/1")
-	public String echo() {
-		return "echo1";
-	}
 }
