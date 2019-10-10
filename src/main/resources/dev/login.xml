@@ -27,7 +27,7 @@
   	SELECT `POWER` FROM USER WHERE `NO` = ${value}
   </select>
   
-  <select id="test" resultType="hashmap">
-  	SELECT 1 as cnt
+  <select id="test" resultType="dev.blackping.shop.bean.TestVO">
+  	SELECT 1 AS `ID`, 2 AS `TITLE
   </select>
 </mapper>

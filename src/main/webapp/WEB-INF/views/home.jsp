@@ -10,10 +10,10 @@
 		</style>
 		<title>WebSocket</title>
 		<script type="text/javascript" src="/res/js/jquery-3.4.1.min.js"></script>
-		<script type="text/javascript" src="/res/js/func.js"></script>
-		<script type="text/javascript" src="/res/js/topic.js"></script>
+		<script type="text/javascript" src="/res/js/func.min.js"></script>
+		<script type="text/javascript" src="/res/js/topic.min.js"></script>
 		<script type="text/javascript" src="/res/js/jscolor.js"></script>
-		<script type="text/javascript" src="/res/js/start.js"></script>
+		<script type="text/javascript" src="/res/js/start.min.js"></script>
 		<script></script>
 	</head>
 	<body>
