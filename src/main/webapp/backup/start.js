@@ -102,9 +102,9 @@ function select(search) {
 							alert("네트워크 오류입니다.");
 						}
 					} else {
-						getMessage(data.msg);
 						select();
 						topicselect();
+						getMessage(data.msg);
 					}
 				});
 			});
@@ -166,7 +166,10 @@ function topicselect() {
 						}
 					} else {
 						getMessage(data.msg);
-						if(Socket != undefined) select();
+						if(Socket != undefined) {
+							select();
+							topicselect();
+						}
 					}
 				});
 			});
@@ -313,8 +316,8 @@ function socket() {
 }
 
 function Connect() {
-//	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
 		$('.loader').addClass('display-none');
