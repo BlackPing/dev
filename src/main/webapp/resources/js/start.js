@@ -1,12 +1,12 @@
+let Socket;
+let sendMessage = function(type, roomNumber, msg) { };
+let onMessage = function(msg) { };
+let textarea = 0;
+let status = false;
+let click_index = 0;
+let Option = {};
+
 $(document).ready(function() {
-	let Socket;
-	let sendMessage = function(type, roomNumber, msg) { };
-	let onMessage = function(msg) { };
-	let textarea = 0;
-	let status = false;
-	let click_index = 0;
-	let Option = {};
-	
 //	async function asyncOpen() { // 비동기 처리
 //		const t1 = await socket();
 //		const t2 = await select();
@@ -313,8 +313,8 @@ function socket() {
 }
 
 function Connect() {
-//	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
-	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
+	Socket = new WebSocket("ws://dev.blackping.shop:8080/echo/websocket");
+//	Socket = new WebSocket("ws://socket.com:8080/echo/websocket");
 	
 	Socket.onopen = function () {
 		$('.loader').addClass('display-none');

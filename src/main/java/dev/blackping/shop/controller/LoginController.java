@@ -64,7 +64,6 @@ public class LoginController {
 				String id = httpMap.get("id").toString();
 				
 				JSONObject jobj = JSONObject.fromObject(httpMap.get("properties"));
-				System.out.println(jobj.toString());
 				String nickname = jobj.get("nickname").toString();
 				String profile_image = "";
 				

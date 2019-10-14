@@ -4,22 +4,28 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<style>
 			@import url("/res/css/commons.css");
 			@import url("/res/css/home.css");
 		</style>
+		<style media="screen and (max-width:600px)">
+			#container { width: calc(100% - 25%); margin-left: calc(50% - 25%); }
+			#left-container { width: 100%; }
+			header, footer { min-width: 0px; }
+			#socket-container { left: -40%; }
+		</style>
 		<title>WebSocket</title>
 		<script type="text/javascript" src="/res/js/jquery-3.4.1.min.js"></script>
-		<script type="text/javascript" src="/res/js/func.min.js"></script>
-		<script type="text/javascript" src="/res/js/topic.min.js"></script>
+		<script type="text/javascript" src="/res/js/func.js"></script>
+		<script type="text/javascript" src="/res/js/topic.js"></script>
 		<script type="text/javascript" src="/res/js/jscolor.js"></script>
-		<script type="text/javascript" src="/res/js/start.min.js"></script>
+		<script type="text/javascript" src="/res/js/start.js"></script>
 		<script></script>
 	</head>
 	<body>
 		<c:set var="session" value="${sessionScope.SESSION_OBJECT}" />
-		
-		<jsp:include page="/resources/jsp/header.jsp" flush="false" />
+		<jsp:include page="/resources/jsp/header.jsp" flush="true" />
 		<div id="container">
 			<div class="loader display-none"></div>
 			<div id="left-container">
